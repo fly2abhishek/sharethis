@@ -1,0 +1,5 @@
+{
+  "name": "drupal/sharethis",
+  "description": "Add the ShareThis widget to nodes on your site",
+  "type": "drupal-module"
+}
