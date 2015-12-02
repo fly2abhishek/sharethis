@@ -1,0 +1,48 @@
+<?php
+/**
+ * @file
+ * A module that adds one of the ShareThis widget to your website.
+ */
+
+/**
+ * Implements hook_help().
+ *
+ * Displays help and module information.
+ *
+ * @param path
+ *   Which path of the site we're using to display help
+ * @param arg
+ *   Array that holds the current path as returned from arg() function
+ */
+function sharethis_help($path, $arg) {
+  global $base_url;
+  switch ($path) {
+    case 'admin/config/services/sharethis':
+      return '<p>' . t('Choose the widget, button family, and services for using <a href="@sharethis">ShareThis</a> to share content online.', array('@sharethis' => 'http://www.sharethis.com')) . '</p>';
+      break;
+    case "admin/help#sharethis":
+      $return_value = "<p>" . t("This plugin places the ShareThis widget on each node.") . '</p>';
+      $return_value .= "<ul><li>" . t("The Block pulls the URL from the current page and current Drupal title, the node version pulls it from the node title and url.") . '</li>';
+      $return_value .= "<li>" . t("The block can be placed anywhere on a page, the node is limited to where nodes normally go") . '</li>';
+      $return_value .= "<li>" . t("The block module is more likely to be compatible with other plugins that use blocks rather than nodes. (Panels works nicely with the block)") . '</li></ul>';
+      $return_value .= "<p>" . t('For various configuration options please got to <a href="@sharethis">the settings page</a>.', array('@sharethis' => url('admin/config/services/sharethis'))) . '</p>';
+      $return_value .= '<p>' . t('For more information, please visit <a href="@help">support.sharethis.com</a>.', array('@help' => 'http://support.sharethis.com/customer/portal/articles/446621-drupal-integration')) . '</p>';
+      return $return_value;
+      break;
+  }
+}
+
+/**
+ * Converts given value to boolean.
+ *
+ *
+ * @param val
+ *   Which value to convert to boolean
+ */
+function to_boolean($val) {
+  if (strtolower(trim($val)) === 'false') {
+    return false;
+  } else {
+    return (boolean)$val;
+  }
+}
