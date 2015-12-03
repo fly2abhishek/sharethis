@@ -3,6 +3,7 @@
  * @file
  * A module that adds one of the ShareThis widget to your website.
  */
+use Drupal\node\Entity\NodeType;
 
 /**
  * Implements hook_help().
@@ -45,4 +46,37 @@ function to_boolean($val) {
   } else {
     return (boolean)$val;
   }
+}
+/**
+ * sharethisGetOptionArray is a helper function for DB access.
+ *
+ * Returns options that have been stored in the database.
+ *
+ * @TODO: Switch from this function to just straight variable_get() calls.
+ */
+function sharethis_get_options_array() {
+  $default_sharethis_nodetypes = array("article"=>"article", "page"=>"page");
+  $view_modes = array();
+  foreach (array_keys(NodeType::loadMultiple()) as $type) {
+    //$view_modes[$type] = \Drupal::config('sharethis.settings')->get('sharethis_' . $type . '_options');
+    $view_modes[$type] = array("article"=>"article", "page"=>"page");
+  }
+  return array(
+    'buttons' => \Drupal::config('sharethis.settings')->get('sharethis_button_option', 'stbc_button'),
+    'publisherID' => \Drupal::config('sharethis.settings')->get('sharethis_publisherID', ''),
+    'services' => \Drupal::config('sharethis.settings')->get('sharethis_service_option'),
+    'option_extras' => \Drupal::config('sharethis.settings')->get('sharethis_option_extras', array("Google Plus One:plusone"=>"Google Plus One:plusone", "Facebook Like:fblike"=>"Facebook Like:fblike")),
+    'widget' => \Drupal::config('sharethis.settings')->get('sharethis_widget_option', 'st_multi'),
+    'onhover' => \Drupal::config('sharethis.settings')->get('sharethis_option_onhover', TRUE),
+    'neworzero' => \Drupal::config('sharethis.settings')->get('sharethis_option_neworzero', FALSE),
+    'twitter_suffix' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_suffix', ''),
+    'twitter_handle' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_handle', ''),
+    'twitter_recommends' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_recommends', ''),
+    'late_load' => \Drupal::config('sharethis.settings')->get('sharethis_late_load', FALSE),
+    'view_modes' => $view_modes,
+    'sharethis_cns' => \Drupal::config('sharethis.settings')->get('sharethis_cns',array('donotcopy'=>'0','hashaddress'=>'0')),
+    'sharethis_callesi' => (NULL == \Drupal::config('sharethis.settings')->get('sharethis_cns'))?1:0,
+    'sharethis_node_types' => \Drupal::config('sharethis.settings')->get('sharethis_node_types', $default_sharethis_nodetypes),
+    'shorten' => \Drupal::config('sharethis.settings')->get('sharethis_option_shorten', TRUE),
+  );
 }

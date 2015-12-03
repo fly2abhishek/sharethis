@@ -1,4 +1,4 @@
-sharethis.set_admin:
+sharethis.configuration_form:
   path: 'admin/config/services/sharethis'
   defaults:
     _form: '\Drupal\sharethis\Form\SharethisConfigurationForm'

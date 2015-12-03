@@ -1,0 +1,22 @@
+drupal.sharethisform:
+  version: VERSION
+  css:
+    css/ShareThisForm.css: { }
+  js:
+    js/ShareThisForm.js: { }
+  dependencies:
+      - core/jquery.ui.dialog
+      - core/drupal.ajax
+      - core/drupalSettings
+
+drupal.sharethispicker:
+  version: VERSION
+  css:
+    css/stlib_picker.css: { }
+  js:
+    js/stlib_picker.js: { }
+
+drupal.sharethispickerexternal:
+  version: VERSION
+  js:
+    https://ws.sharethis.com/share5x/js/stcommon.js: { }
