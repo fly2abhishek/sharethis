@@ -9,8 +9,8 @@
  * Implements hook_install().
  */
 function sharethis_install() {
-  $config = \Drupal::service('sharethis.publisherID')->getEditable('system.performance');
-  $config->set('sharethis.publisherID', 1)->save();
+  //$config = \Drupal::service('sharethis.publisherID')->getEditable('system.performance');
+  //$config->set('sharethis.publisherID', 1)->save();
 }
 
 /**
