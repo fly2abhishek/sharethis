@@ -137,7 +137,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
         'block' => t('Block'),
         'links' => t('Links area'),
       ),
-     // '#default_value' => variable_get('sharethis_location', 'content'),
+     // '#default_value' => variable_get('location', 'content'),
     );
 //
 //    // Add an information section for each location type, each dependent on the
@@ -192,7 +192,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
     $form['context']['sharethis_comments'] = array(
       '#title' => t('Comments'),
       '#type' => 'checkbox',
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_comments'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('comments'),
       '#description' => t('Display ShareThis on comments.'),
      // '#access' => module_exists('comment'),
     );
@@ -202,7 +202,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#required' => FALSE,
       '#type' => 'select',
      // '#options' => drupal_map_assoc(array(-100, -50, -25, -10, 0, 10, 25, 50, 100)),
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_weight'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('weight'),
     );
     $form['advanced'] = array(
       '#type' => 'fieldset',
@@ -220,43 +220,43 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#title' => t('Late Load'),
       '#description' => t("You can change the order in which ShareThis widget loads on the user's browser. By default the ShareThis widget loader loads as soon as the browser encounters the JavaScript tag; typically in the tag of your page. ShareThis assets are generally loaded from a CDN closest to the user. However, if you wish to change the default setting so that the widget loads after your web-page has completed loading then you simply tick this option."),
       '#type' => 'checkbox',
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_late_load'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('late_load'),
     );
     $form['advanced']['sharethis_twitter_suffix'] = array(
       '#title' => t("Twitter Suffix"),
       '#description' => t("Optionally append a Twitter handle, or text, so that you get pinged when someone shares an article. Example: <em>via @YourNameHere</em>"),
       '#type' => 'textfield',
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_suffix'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('twitter_suffix'),
     );
     $form['advanced']['sharethis_twitter_handle'] = array(
       '#title' => t('Twitter Handle'),
       '#description' => t('Twitter handle to use when sharing.'),
       '#type' => 'textfield',
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_handle'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('twitter_handle'),
     );
     $form['advanced']['sharethis_twitter_recommends'] = array(
       '#title' => t('Twitter recommends'),
       '#description' => t('Specify a twitter handle to be recommended to the user.'),
       '#type' => 'textfield',
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_recommends'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('twitter_recommends'),
     );
     $form['advanced']['sharethis_option_onhover'] = array(
       '#type' => 'checkbox',
       '#title' => t('Display ShareThis widget on hover'),
       '#description' => t('If disabled, the ShareThis widget will be displayed on click instead of hover.'),
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_option_onhover'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('option_onhover'),
     );
     $form['advanced']['sharethis_option_neworzero'] = array(
       '#type' => 'checkbox',
       '#title' => t('Display count "0" instead of "New"'),
       '#description' => t('Display a zero (0) instead of "New" in the count for content not yet shared.'),
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_option_neworzero'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('option_neworzero'),
     );
     $form['advanced']['sharethis_option_shorten'] = array(
       '#type' => 'checkbox',
       '#title' => t('Display short URL'),
       '#description' => t('Display either the full or the shortened URL.'),
-      '#default_value' => \Drupal::config('sharethis.settings')->get('sharethis_option_shorten'),
+      '#default_value' => \Drupal::config('sharethis.settings')->get('option_shorten'),
     );
     $form['advanced']['sharethis_cns'] = array(
       '#title' => t('<b>CopyNShare </b><sup>(<a href="http://support.sharethis.com/customer/portal/articles/517332-share-widget-faqs#copynshare" target="_blank">?</a>)</sup>'),
@@ -287,13 +287,13 @@ class SharethisConfigurationForm extends ConfigFormBase {
     //Additional filters for the service option input
 
     // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code
-    $form_state['values']['sharethis_service_option'] = filter_xss($form_state['values']['sharethis_service_option'], array());
+    $form_state['values']['sharethis_service_option'] = filter_xss($form_state['values']['service_option'], array());
 
     //Additional filters for the option extras input
-    $form_state['values']['sharethis_option_extras'] = (isset($form_state['values']['sharethis_option_extras'])) ? $form_state['values']['sharethis_option_extras'] : array();
+    $form_state['values']['sharethis_option_extras'] = (isset($form_state['values']['option_extras'])) ? $form_state['values']['option_extras'] : array();
 
     // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code
-    $form_state['values']['sharethis_publisherID'] = filter_xss($form_state['values']['sharethis_publisherID'], array());
+    $form_state['values']['sharethis_publisherID'] = filter_xss($form_state['values']['publisherID'], array());
 
     if($form_state['values']['sharethis_callesi'] == 1){
       unset($form_state['values']['sharethis_cns']);
@@ -301,13 +301,13 @@ class SharethisConfigurationForm extends ConfigFormBase {
     unset($form_state['values']['sharethis_callesi']);
 
     // Ensure default value for twitter suffix
-    $form_state['values']['sharethis_twitter_suffix'] = (isset($form_state['values']['sharethis_twitter_suffix'])) ? $form_state['values']['sharethis_twitter_suffix'] : '';
+    $form_state['values']['sharethis_twitter_suffix'] = (isset($form_state['values']['twitter_suffix'])) ? $form_state['values']['twitter_suffix'] : '';
 
     // Ensure default value for twitter handle
-    $form_state['values']['sharethis_twitter_handle'] = (isset($form_state['values']['sharethis_twitter_handle'])) ? $form_state['values']['sharethis_twitter_handle'] : '';
+    $form_state['values']['sharethis_twitter_handle'] = (isset($form_state['values']['twitter_handle'])) ? $form_state['values']['twitter_handle'] : '';
 
     // Ensure default value for twitter recommends
-    $form_state['values']['sharethis_twitter_recommends'] = (isset($form_state['values']['sharethis_twitter_recommends'])) ? $form_state['values']['sharethis_twitter_recommends'] : '';
+    $form_state['values']['sharethis_twitter_recommends'] = (isset($form_state['values']['twitter_recommends'])) ? $form_state['values']['twitter_recommends'] : '';
 
     parent::validateForm($form, $form_state);
   }

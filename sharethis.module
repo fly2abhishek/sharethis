@@ -62,21 +62,21 @@ function sharethis_get_options_array() {
     $view_modes[$type] = array("article"=>"article", "page"=>"page");
   }
   return array(
-    'buttons' => \Drupal::config('sharethis.settings')->get('sharethis_button_option', 'stbc_button'),
-    'publisherID' => \Drupal::config('sharethis.settings')->get('sharethis_publisherID', ''),
-    'services' => \Drupal::config('sharethis.settings')->get('sharethis_service_option'),
-    'option_extras' => \Drupal::config('sharethis.settings')->get('sharethis_option_extras', array("Google Plus One:plusone"=>"Google Plus One:plusone", "Facebook Like:fblike"=>"Facebook Like:fblike")),
+    'buttons' => \Drupal::config('sharethis.settings')->get('button_option', 'stbc_button'),
+    'publisherID' => \Drupal::config('sharethis.settings')->get('publisherID', ''),
+    'services' => \Drupal::config('sharethis.settings')->get('service_option'),
+    'option_extras' => \Drupal::config('sharethis.settings')->get('option_extras', array("Google Plus One:plusone"=>"Google Plus One:plusone", "Facebook Like:fblike"=>"Facebook Like:fblike")),
     'widget' => \Drupal::config('sharethis.settings')->get('sharethis_widget_option', 'st_multi'),
-    'onhover' => \Drupal::config('sharethis.settings')->get('sharethis_option_onhover', TRUE),
-    'neworzero' => \Drupal::config('sharethis.settings')->get('sharethis_option_neworzero', FALSE),
-    'twitter_suffix' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_suffix', ''),
-    'twitter_handle' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_handle', ''),
-    'twitter_recommends' => \Drupal::config('sharethis.settings')->get('sharethis_twitter_recommends', ''),
-    'late_load' => \Drupal::config('sharethis.settings')->get('sharethis_late_load', FALSE),
+    'onhover' => \Drupal::config('sharethis.settings')->get('option_onhover', TRUE),
+    'neworzero' => \Drupal::config('sharethis.settings')->get('option_neworzero', FALSE),
+    'twitter_suffix' => \Drupal::config('sharethis.settings')->get('twitter_suffix', ''),
+    'twitter_handle' => \Drupal::config('sharethis.settings')->get('twitter_handle', ''),
+    'twitter_recommends' => \Drupal::config('sharethis.settings')->get('twitter_recommends', ''),
+    'late_load' => \Drupal::config('sharethis.settings')->get('late_load', FALSE),
     'view_modes' => $view_modes,
     'sharethis_cns' => \Drupal::config('sharethis.settings')->get('sharethis_cns',array('donotcopy'=>'0','hashaddress'=>'0')),
     'sharethis_callesi' => (NULL == \Drupal::config('sharethis.settings')->get('sharethis_cns'))?1:0,
-    'sharethis_node_types' => \Drupal::config('sharethis.settings')->get('sharethis_node_types', $default_sharethis_nodetypes),
-    'shorten' => \Drupal::config('sharethis.settings')->get('sharethis_option_shorten', TRUE),
+    'node_types' => \Drupal::config('sharethis.settings')->get('node_types', $default_sharethis_nodetypes),
+    'shorten' => \Drupal::config('sharethis.settings')->get('option_shorten', TRUE),
   );
 }
