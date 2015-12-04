@@ -287,13 +287,13 @@ class SharethisConfigurationForm extends ConfigFormBase {
     //Additional filters for the service option input
 
     // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code
-    $form_state['values']['sharethis_service_option'] = filter_xss($form_state['values']['service_option'], array());
+    $form_state['values']['sharethis_service_option'] = filter_xss($form_state['values']['sharethis_service_option'], array());
 
     //Additional filters for the option extras input
-    $form_state['values']['sharethis_option_extras'] = (isset($form_state['values']['option_extras'])) ? $form_state['values']['option_extras'] : array();
+    $form_state['values']['sharethis_option_extras'] = (isset($form_state['values']['sharethis_option_extras'])) ? $form_state['values']['sharethis_option_extras'] : array();
 
     // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code
-    $form_state['values']['sharethis_publisherID'] = filter_xss($form_state['values']['publisherID'], array());
+    $form_state['values']['sharethis_publisherID'] = filter_xss($form_state['values']['sharethis_publisherID'], array());
 
     if($form_state['values']['sharethis_callesi'] == 1){
       unset($form_state['values']['sharethis_cns']);
@@ -301,13 +301,13 @@ class SharethisConfigurationForm extends ConfigFormBase {
     unset($form_state['values']['sharethis_callesi']);
 
     // Ensure default value for twitter suffix
-    $form_state['values']['sharethis_twitter_suffix'] = (isset($form_state['values']['twitter_suffix'])) ? $form_state['values']['twitter_suffix'] : '';
+    $form_state['values']['sharethis_twitter_suffix'] = (isset($form_state['values']['sharethis_twitter_suffix'])) ? $form_state['values']['sharethis_twitter_suffix'] : '';
 
     // Ensure default value for twitter handle
-    $form_state['values']['sharethis_twitter_handle'] = (isset($form_state['values']['twitter_handle'])) ? $form_state['values']['twitter_handle'] : '';
+    $form_state['values']['sharethis_twitter_handle'] = (isset($form_state['values']['sharethis_twitter_handle'])) ? $form_state['values']['sharethis_twitter_handle'] : '';
 
     // Ensure default value for twitter recommends
-    $form_state['values']['sharethis_twitter_recommends'] = (isset($form_state['values']['twitter_recommends'])) ? $form_state['values']['twitter_recommends'] : '';
+    $form_state['values']['sharethis_twitter_recommends'] = (isset($form_state['values']['sharethis_twitter_recommends'])) ? $form_state['values']['sharethis_twitter_recommends'] : '';
 
     parent::validateForm($form, $form_state);
   }
