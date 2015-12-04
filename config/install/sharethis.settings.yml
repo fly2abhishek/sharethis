@@ -3,16 +3,26 @@ button_option: stbc_button
 comments: 0
 late_load: 0
 location: content
-node_types: ''
-option_extras: ''
+node_types:
+  article: article
+  page: page
+option_extras:
+  googleplusone: Google Plus One:plusone
+  facebooklike: Facebook Like:fblike
 option_neworzero: 0
 option_onhover: 1
 option_shorten: 1
 page_options: ''
-publisherID: 0
+publisherID: dr-fc69a2d8-3148-ad7c-d8c9-36f9bca1964a
 service_option: '"Facebook:facebook","Tweet:twitter","LinkedIn:linkedin","Email:email","ShareThis:sharethis","Pinterest:pinterest"'
 twitter_handle: ''
 twitter_recommends: ''
 twitter_suffix: ''
 webform_options: ''
 weight: '10'
+widget_option: 'st_multi'
+cns:
+  donotcopy: 0
+  hashaddress: 0
+
+
