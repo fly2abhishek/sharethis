@@ -9,6 +9,7 @@ namespace Drupal\sharethis\Form;
 
 use Drupal;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -155,7 +156,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#suffix' => '</em>',
     );
     // Add help text for the 'block' location.
- //   $form['context']['block']['#children'] = t('You must choose which region to display the <em>ShareThis block</em> in from the <a href="@blocksadmin">Blocks administration</a>.', array('@blocksadmin' => url('admin/structure/block')));
+    $form['context']['block']['#children'] = 'You must choose which region to display the in from the Blocks administration';
     $entity_bundles = \Drupal::entityManager()->getBundleInfo('node');
     // Add checkboxes for each view mode of each bundle.
     $entity_modes = \Drupal::entityManager()->getViewModes('node');
@@ -182,7 +183,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
     foreach($entity_bundles as $bundle => $bundle_info) {
       $content_types[$bundle] = t($bundle_info['label']);
     }
-    $sharethis_weight_list = array(-100, -50, -25, -10, 0, 10, 25, 50, 100);
+
     $form['context']['content']['sharethis_node_types'] = array(
       '#title' => t('Node Types'),
       '#description' => t('Select which node types the ShareThis widget should appear on.'),
@@ -197,6 +198,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#description' => t('Display ShareThis on comments.'),
      // '#access' => module_exists('comment'),
     );
+    $sharethis_weight_list = array(-100, -50, -25, -10, 0, 10, 25, 50, 100);
     $form['context']['sharethis_weight'] = array(
       '#title' => t('Weight'),
       '#description' => t('The weight of the widget determines the location on the page where it will appear.'),
@@ -273,7 +275,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
         'donotcopy' => t('Measure copy & shares of your site\'s Content'),
         'hashaddress' => t('Measure copy & shares of your site\'s URLs'),
       ),
-      '#default_value' => $current_options_array['sharethis_cns'],
+      '#default_value' => \Drupal::config('sharethis.settings')->get('cns'),
     );
     return parent::buildForm($form, $form_state);
   }
@@ -282,45 +284,69 @@ class SharethisConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    $input_values = $form_state->getUserInput();
+
+
     //Additional filters for the service option input
 
     // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code
-    $form_state['values']['sharethis_service_option'] = filter_xss($form_state['values']['sharethis_service_option'], array());
+    $input_values['sharethis_service_option'] = Xss::filter($input_values['sharethis_service_option']);
 
     //Additional filters for the option extras input
-    $form_state['values']['sharethis_option_extras'] = (isset($form_state['values']['sharethis_option_extras'])) ? $form_state['values']['sharethis_option_extras'] : array();
+    $input_values['sharethis_option_extras'] = (isset($input_values['sharethis_option_extras'])) ? $input_values['sharethis_option_extras'] : array();
 
     // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code
-    $form_state['values']['sharethis_publisherID'] = filter_xss($form_state['values']['sharethis_publisherID'], array());
+    $input_values['sharethis_publisherID'] = Xss::filter($input_values['sharethis_publisherID']);
 
-    if($form_state['values']['sharethis_callesi'] == 1){
-      unset($form_state['values']['sharethis_cns']);
+    if($input_values['sharethis_callesi'] == 1){
+      unset($input_values['sharethis_cns']);
     }
-    unset($form_state['values']['sharethis_callesi']);
+    unset($input_values['sharethis_callesi']);
 
     // Ensure default value for twitter suffix
-    $form_state['values']['sharethis_twitter_suffix'] = (isset($form_state['values']['sharethis_twitter_suffix'])) ? $form_state['values']['sharethis_twitter_suffix'] : '';
+    $input_values['sharethis_twitter_suffix'] = (isset($input_values['sharethis_twitter_suffix'])) ? $input_values['sharethis_twitter_suffix'] : '';
 
     // Ensure default value for twitter handle
-    $form_state['values']['sharethis_twitter_handle'] = (isset($form_state['values']['sharethis_twitter_handle'])) ? $form_state['values']['sharethis_twitter_handle'] : '';
+    $input_values['sharethis_twitter_handle'] = (isset($input_values['sharethis_twitter_handle'])) ? $input_values['sharethis_twitter_handle'] : '';
 
     // Ensure default value for twitter recommends
-    $form_state['values']['sharethis_twitter_recommends'] = (isset($form_state['values']['sharethis_twitter_recommends'])) ? $form_state['values']['sharethis_twitter_recommends'] : '';
+    $input_values['sharethis_twitter_recommends'] = (isset($input_values['sharethis_twitter_recommends'])) ? $input_values['sharethis_twitter_recommends'] : '';
 
     parent::validateForm($form, $form_state);
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $input_values = $form_state->getUserInput();
+    echo "<pre>";print_r($input_values);echo"</pre>";
     // If the location is changing to/from 'content', clear the Field Info cache.
-    $current_location = variable_get('sharethis_location', 'content');
-    $new_location = $form_state['values']['sharethis_location'];
+    $current_location = \Drupal::config('sharethis.settings')->get('sharethis_location');
+    $new_location = $input_values['sharethis_location'];
     if (($current_location == 'content' || $new_location == 'content') && $current_location != $new_location) {
-      field_info_cache_clear();
+      EntityManagerInterface::clearCachedFieldDefinitions();
     }
+    $config = \Drupal::configFactory()->getEditable('sharethis.settings');
+    $config->set('button_option', $input_values['sharethis_button_option'])
+      ->set('service_option', $input_values['sharethis_service_option'])
+      ->set('option_extras', $input_values['sharethis_option_extras'])
+      ->set('callesi', $input_values['sharethis_callesi'])
+      ->set('location', $input_values['sharethis_location'])
+      ->set('comments', $input_values['sharethis_comments'])
+      ->set('weight', $input_values['sharethis_weight'])
+      ->set('publisherID', $input_values['sharethis_publisherID'])
+      ->set('late_load', $input_values['sharethis_late_load'])
+      ->set('twitter_suffix', $input_values['sharethis_twitter_suffix'])
+      ->set('twitter_handle', $input_values['sharethis_twitter_handle'])
+      ->set('twitter_recommends', $input_values['sharethis_twitter_recommends'])
+      ->set('option_onhover', $input_values['sharethis_option_onhover'])
+      ->set('option_neworzero', $input_values['sharethis_option_neworzero'])
+      ->set('option_shorten', $input_values['sharethis_option_shorten'])
+      ->set('sharethis_cns.donotcopy', $input_values['sharethis_cns']['donotcopy'])
+      ->set('sharethis_cns.hashaddress', $input_values['sharethis_cns']['hashaddress'])
+      ->save();
     parent::submitForm($form, $form_state);
   }
-
 }
