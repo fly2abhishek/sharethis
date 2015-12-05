@@ -20,3 +20,5 @@ drupal.sharethispickerexternal:
   version: VERSION
   js:
     https://ws.sharethis.com/share5x/js/stcommon.js: { }
+  dependencies:
+      - core/jquery
