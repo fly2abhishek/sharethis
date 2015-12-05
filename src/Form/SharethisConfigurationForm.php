@@ -43,9 +43,6 @@ class SharethisConfigurationForm extends ConfigFormBase {
     // Get the path variables setup.
     // Load the css and js for our module's configuration.
     $config = $this->config('sharethis.settings');
-    $form['#attached']['library'][] = 'sharethis/drupal.sharethisform';
-    $form['#attached']['library'][] = 'sharethis/drupal.sharethispicker';
-    $form['#attached']['library'][] = 'sharethis/drupal.sharethispickerexternal';
 
     //This is ShareThis's common library - has a serviceList of all the objects that are currently supported.
     //    drupal_add_js('https://ws.sharethis.com/share5x/js/stcommon.js', 'external');
@@ -99,11 +96,12 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#required' => TRUE,
       '#type' => 'textfield',
       '#prefix' => '<div>',
-      '#suffix' => '</div><div id="myPicker"></div><script type="text/javascript">stlib_picker.setupPicker(jQuery("#myPicker"), [' . $service_string_markup . '], drupal_st.serviceCallback);</script>',
+      '#suffix' => '</div><div id="myPicker"></div>',
       '#title' => t("Choose Your Services."),
       '#default_value' => $service_string,
       '#maxlength' => 1024,
     );
+    
     $form['options']['sharethis_option_extras'] = array(
       '#title' => t('Extra services'),
       '#description' => t('Select additional services which will be available. These are not officially supported by ShareThis, but are available.'),
@@ -147,8 +145,8 @@ class SharethisConfigurationForm extends ConfigFormBase {
       $form['context'][$location_type]['#type'] = 'container';
       $form['context'][$location_type]['#states']['visible'][':input[name="sharethis_location"]'] = array('value' => $location_type);
     }
-//
-//    // Add help text for the 'content' location.
+
+    // Add help text for the 'content' location.
     $form['context']['content']['help'] = array(
       '#markup' => t('When using the Content location, you must place the ShareThis links in the <a href="@url">Manage Display</a> section of each content type.'),
       '#weight' => 10,
@@ -277,6 +275,10 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ),
       '#default_value' => \Drupal::config('sharethis.settings')->get('cns'),
     );
+    $form['#attached']['library'][] = 'sharethis/drupal.sharethisform';
+    $form['#attached']['library'][] = 'sharethis/drupal.sharethispicker';
+    $form['#attached']['library'][] = 'sharethis/drupal.sharethispickerexternal';
+
     return parent::buildForm($form, $form_state);
   }
 
