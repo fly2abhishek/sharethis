@@ -108,12 +108,12 @@
 
       $(".st_formButtonSave").click(drupal_st.updateOptions);
 
-      $('#st_cns_settings').find('input').live('click', drupal_st.updateDoNotHash);
+      $('#st_cns_settings').find('input').on('click', drupal_st.updateDoNotHash);
     },
     serviceCallback: function () {
       var services = stlib_picker.getServices("myPicker");
       var outputString = "";
-      for (i = 0; i < services.length; i++) {
+      for ( var i = 0; i < services.length; i++) {
         outputString += "\"" + _all_services[services[i]].title + ":"
         outputString += services[i] + "\","
       }

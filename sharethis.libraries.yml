@@ -1,9 +1,10 @@
 drupal.sharethisform:
   version: VERSION
   css:
-    css/ShareThisForm.css: { }
+    theme:
+      css/sharethis.form.css: {}
   js:
-    js/ShareThisForm.js: { }
+    js/sharethis.form.js: {}
   dependencies:
       - core/jquery.ui.dialog
       - core/drupal.ajax
@@ -12,13 +13,14 @@ drupal.sharethisform:
 drupal.sharethispicker:
   version: VERSION
   css:
-    css/stlib_picker.css: { }
+    component:
+      css/stlib_picker.css: {}
   js:
-    js/stlib_picker.js: { }
+    js/stlib_picker.js: {}
 
 drupal.sharethispickerexternal:
   version: VERSION
   js:
-    https://ws.sharethis.com/share5x/js/stcommon.js: { }
+    https://ws.sharethis.com/share5x/js/stcommon.js: {}
   dependencies:
       - core/jquery

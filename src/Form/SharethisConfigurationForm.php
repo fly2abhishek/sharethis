@@ -39,19 +39,15 @@ class SharethisConfigurationForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
+    global $base_url;
+    $my_path = drupal_get_path('module', 'sharethis');
+
     // First, setup variables we will need.
     // Get the path variables setup.
     // Load the css and js for our module's configuration.
     $config = $this->config('sharethis.settings');
-    $form['#attached']['library'][] = 'sharethis/drupal.sharethisform';
-    $form['#attached']['library'][] = 'sharethis/drupal.sharethispicker';
-    $form['#attached']['library'][] = 'sharethis/drupal.sharethispickerexternal';
-
-    //This is ShareThis's common library - has a serviceList of all the objects that are currently supported.
-    //    drupal_add_js('https://ws.sharethis.com/share5x/js/stcommon.js', 'external');
 
     $current_options_array = sharethis_get_options_array();
-//  global $base_url;
 //  Create the variables related to widget choice.
     $widget_type = $current_options_array['widget'];
     $widget_markup = "";
@@ -91,7 +87,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ),
       '#default_value' => $button_choice,
       '#title' => t("Choose a button style:"),
-      '#prefix' => '<div class="st_widgetContain"><div class="st_spriteCover"><img id="stb_sprite" class="st_buttonSelectSprite ' . $button_choice . '" src="' . $base_url . '/' . $my_path . '/img/preview_sprite.png"></img></div><div class="st_widgetPic"><img class="st_buttonSelectImage" src="' . $base_url . '/' . $my_path . '/img/preview_bg.png"></img></div>',
+      '#prefix' => '<div class="st_widgetContain"><div class="st_spriteCover"><img id="stb_sprite" class="st_buttonSelectSprite ' . $button_choice . '" src="' . $base_url . '/' . $my_path . '/img/preview_sprite.png"></img></div><div class="st_widgetPic"><img class="st_buttonSelectImage" src="' . $base_url . '/' . $my_path . '/img/preview_bg.png" /></div>',
       '#suffix' => '</div>'
     );
     $form['options']['sharethis_service_option'] = array(
@@ -277,6 +273,9 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ),
       '#default_value' => \Drupal::config('sharethis.settings')->get('cns'),
     );
+    $form['#attached']['library'][] = 'sharethis/drupal.sharethisform';
+    $form['#attached']['library'][] = 'sharethis/drupal.sharethispicker';
+    $form['#attached']['library'][] = 'sharethis/drupal.sharethispickerexternal';
     return parent::buildForm($form, $form_state);
   }
 
