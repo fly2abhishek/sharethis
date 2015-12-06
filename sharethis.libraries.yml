@@ -14,7 +14,7 @@ drupal.sharethispicker:
   css:
     css/stlib_picker.css: { }
   js:
-    js/stlib_picker.js: { }
+    js/stlib_picker.js: { weight: -9 }
 
 drupal.sharethispickerexternal:
   version: VERSION
@@ -22,3 +22,4 @@ drupal.sharethispickerexternal:
     https://ws.sharethis.com/share5x/js/stcommon.js: { }
   dependencies:
       - core/jquery
+
