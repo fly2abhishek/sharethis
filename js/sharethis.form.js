@@ -156,6 +156,8 @@
   };
 //After the page is loaded, we want to add events to dynamically created elements.
   $(document).ready(drupal_st.addEvents);
+    var social = '"Facebook:facebook","Tweet:twitter","LinkedIn:linkedin","Email:email","ShareThis:sharethis","Pinterest:pinterest"';
+    stlib_picker.setupPicker($("#myPicker"), [' . social . '], drupal_st.serviceCallback)
 //After it's all done, hide the text field for the service picker so that no one messes up the data.
   $(document).ready(drupal_st.setupServiceText);
 })(jQuery);

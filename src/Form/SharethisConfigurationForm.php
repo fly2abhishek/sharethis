@@ -95,11 +95,12 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#required' => TRUE,
       '#type' => 'textfield',
       '#prefix' => '<div>',
-      '#suffix' => '</div><div id="myPicker"></div><script type="text/javascript">stlib_picker.setupPicker(jQuery("#myPicker"), [' . $service_string_markup . '], drupal_st.serviceCallback);</script>',
+      '#suffix' => '</div><div id="myPicker"></div>',
       '#title' => t("Choose Your Services."),
       '#default_value' => $service_string,
       '#maxlength' => 1024,
     );
+    
     $form['options']['sharethis_option_extras'] = array(
       '#title' => t('Extra services'),
       '#description' => t('Select additional services which will be available. These are not officially supported by ShareThis, but are available.'),
@@ -143,8 +144,8 @@ class SharethisConfigurationForm extends ConfigFormBase {
       $form['context'][$location_type]['#type'] = 'container';
       $form['context'][$location_type]['#states']['visible'][':input[name="sharethis_location"]'] = array('value' => $location_type);
     }
-//
-//    // Add help text for the 'content' location.
+
+    // Add help text for the 'content' location.
     $form['context']['content']['help'] = array(
       '#markup' => t('When using the Content location, you must place the ShareThis links in the <a href="@url">Manage Display</a> section of each content type.'),
       '#weight' => 10,
