@@ -3,6 +3,7 @@
  * @file
  * A module that adds one of the ShareThis widget to your website.
  */
+use Drupal;
 use Drupal\node\Entity\NodeType;
 
 /**
@@ -16,11 +17,11 @@ use Drupal\node\Entity\NodeType;
  *   Array that holds the current path as returned from arg() function
  */
 function sharethis_help($path, $arg) {
-  global $base_url;
   switch ($path) {
     case 'admin/config/services/sharethis':
       return '<p>' . t('Choose the widget, button family, and services for using <a href="@sharethis">ShareThis</a> to share content online.', array('@sharethis' => 'http://www.sharethis.com')) . '</p>';
       break;
+
     case "admin/help#sharethis":
       $return_value = "<p>" . t("This plugin places the ShareThis widget on each node.") . '</p>';
       $return_value .= "<ul><li>" . t("The Block pulls the URL from the current page and current Drupal title, the node version pulls it from the node title and url.") . '</li>';
@@ -29,24 +30,25 @@ function sharethis_help($path, $arg) {
       $return_value .= "<p>" . t('For various configuration options please got to <a href="@sharethis">the settings page</a>.', array('@sharethis' => url('admin/config/services/sharethis'))) . '</p>';
       $return_value .= '<p>' . t('For more information, please visit <a href="@help">support.sharethis.com</a>.', array('@help' => 'http://support.sharethis.com/customer/portal/articles/446621-drupal-integration')) . '</p>';
       return $return_value;
-      break;
+
   }
 }
 
 /**
  * Converts given value to boolean.
  *
- *
  * @param val
  *   Which value to convert to boolean
  */
 function to_boolean($val) {
   if (strtolower(trim($val)) === 'false') {
-    return false;
-  } else {
-    return (boolean)$val;
+    return FALSE;
+  }
+  else {
+    return (boolean) $val;
   }
 }
+
 /**
  * sharethisGetOptionArray is a helper function for DB access.
  *
@@ -55,29 +57,29 @@ function to_boolean($val) {
  * @TODO: Switch from this function to just straight variable_get() calls.
  */
 function sharethis_get_options_array() {
-  $default_sharethis_nodetypes = array("article"=>"article", "page"=>"page");
+  $default_sharethis_nodetypes = array("article" => "article", "page" => "page");
   $view_modes = array();
   foreach (array_keys(NodeType::loadMultiple()) as $type) {
-    //$view_modes[$type] = \Drupal::config('sharethis.settings')->get('sharethis_' . $type . '_options');
+    //$view_modes[$type] = Drupal::config('sharethis.settings')->get('sharethis_' . $type . '_options');
     $view_modes[$type] = array("article"=>"article", "page"=>"page");
   }
 
   return array(
-    'buttons' => \Drupal::config('sharethis.settings')->get('button_option', 'stbc_button'),
-    'publisherID' => \Drupal::config('sharethis.settings')->get('publisherID'),
-    'services' => \Drupal::config('sharethis.settings')->get('service_option'),
-    'option_extras' => \Drupal::config('sharethis.settings')->get('option_extras'),
-    'widget' => \Drupal::config('sharethis.settings')->get('widget_option'),
-    'onhover' => \Drupal::config('sharethis.settings')->get('option_onhover'),
-    'neworzero' => \Drupal::config('sharethis.settings')->get('option_neworzero'),
-    'twitter_suffix' => \Drupal::config('sharethis.settings')->get('twitter_suffix'),
-    'twitter_handle' => \Drupal::config('sharethis.settings')->get('twitter_handle'),
-    'twitter_recommends' => \Drupal::config('sharethis.settings')->get('twitter_recommends'),
-    'late_load' => \Drupal::config('sharethis.settings')->get('late_load'),
+    'buttons' => Drupal::config('sharethis.settings')->get('button_option', 'stbc_button'),
+    'publisherID' => Drupal::config('sharethis.settings')->get('publisherID'),
+    'services' => Drupal::config('sharethis.settings')->get('service_option'),
+    'option_extras' => Drupal::config('sharethis.settings')->get('option_extras'),
+    'widget' => Drupal::config('sharethis.settings')->get('widget_option'),
+    'onhover' => Drupal::config('sharethis.settings')->get('option_onhover'),
+    'neworzero' => Drupal::config('sharethis.settings')->get('option_neworzero'),
+    'twitter_suffix' => Drupal::config('sharethis.settings')->get('twitter_suffix'),
+    'twitter_handle' => Drupal::config('sharethis.settings')->get('twitter_handle'),
+    'twitter_recommends' => Drupal::config('sharethis.settings')->get('twitter_recommends'),
+    'late_load' => Drupal::config('sharethis.settings')->get('late_load'),
     'view_modes' => $view_modes,
-    'sharethis_cns' => \Drupal::config('sharethis.settings')->get('cns'),
-    'sharethis_callesi' => (NULL == \Drupal::config('sharethis.settings')->get('sharethis_cns'))?1:0,
-    'node_types' => \Drupal::config('sharethis.settings')->get('node_types'),
-    'shorten' => \Drupal::config('sharethis.settings')->get('option_shorten'),
+    'sharethis_cns' => Drupal::config('sharethis.settings')->get('cns'),
+    'sharethis_callesi' => (NULL == Drupal::config('sharethis.settings')->get('sharethis_cns'))?1:0,
+    'node_types' => Drupal::config('sharethis.settings')->get('node_types'),
+    'shorten' => Drupal::config('sharethis.settings')->get('option_shorten'),
   );
 }

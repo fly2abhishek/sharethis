@@ -3,12 +3,12 @@
  * This file contains most of the code for the configuration page.
  */
 
-(function ($) {
+(function ($, window) {
 
   'use strict';
 
-// Create the drupal ShareThis object for clean code and namespacing:
-  var drupal_st = {
+  // Create the drupal ShareThis object for clean code and namespacing:
+  window.drupal_st = {
     // These are handlerd for updating the widget pic class.
     multiW: function () {
       $(".st_widgetPic").addClass("st_multi");
@@ -46,7 +46,7 @@
       toRemove.removeClass("stbc_vcount");
       toRemove.removeClass("stbc_button");
     },
-    //Write helper functions for saving:
+    // Write helper functions for saving:
     getWidget: function () {
       return $(".st_widgetPic").hasClass("st_multiW") ? '5x' : '4x';
     },
@@ -65,10 +65,9 @@
       $("#edit-sharethis-service-option").css({display: "none"});
 
       if ($('input[name=sharethis_callesi]').val() == 1) {
-        //alert("esi called");
         drupal_st.getGlobalCNSConfig();
-      } else {
-        //alert("settings found");
+      }
+      else {
       }
     },
     odjs: function (scriptSrc, callBack) {
@@ -88,14 +87,15 @@
     getGlobalCNSConfig: function () {
       try {
         drupal_st.odjs((("https:" == document.location.protocol) ? "https://wd-edge.sharethis.com/button/getDefault.esi?cb=drupal_st.cnsCallback" : "http://wd-edge.sharethis.com/button/getDefault.esi?cb=drupal_st.cnsCallback"));
-      } catch (err) {
+      }
+      catch (err) {
         drupal_st.cnsCallback(err);
       }
     },
     updateDoNotHash: function () {
       $('input[name=sharethis_callesi]').val(0);
     },
-    // Function to add various events to our html form elements
+    // Function to add various events to our html form elements.
     addEvents: function () {
       $("#edit-sharethis-widget-option-st-multi").click(drupal_st.multiW);
       $("#edit-sharethis-widget-option-st-direct").click(drupal_st.classicW);
@@ -113,7 +113,7 @@
     serviceCallback: function () {
       var services = stlib_picker.getServices("myPicker");
       var outputString = "";
-      for ( var i = 0; i < services.length; i++) {
+      for (var i = 0; i < services.length; i++) {
         outputString += "\"" + _all_services[services[i]].title + ":"
         outputString += services[i] + "\","
       }
@@ -125,7 +125,7 @@
     },
     cnsCallback: function (response) {
       if ((response instanceof Error) || (response == "" || (typeof(response) == "undefined"))) {
-        // Setting default config
+        // Setting default config.
         response = '{"doNotHash": true, "doNotCopy": true, "hashAddressBar": false}';
         response = $.parseJSON(response);
       }
@@ -139,25 +139,29 @@
       if (obj.doNotHash == false || obj.doNotHash === "false") {
         if (obj.doNotCopy === true || obj.doNotCopy == "true") {
           $($('#st_cns_settings').find('input')[0]).removeAttr("checked");
-        } else {
+        }
+        else {
           $($('#st_cns_settings').find('input')[0]).attr("checked", true);
         }
         if (obj.hashAddressBar === true || obj.hashAddressBar == "true") {
           $($('#st_cns_settings').find('input')[1]).attr("checked", true);
-        } else {
+        }
+        else {
           $($('#st_cns_settings').find('input')[1]).removeAttr("checked");
         }
-      } else {
+      }
+      else {
         $('#st_cns_settings').find('input').each(function (index) {
           $(this).removeAttr("checked");
         });
       }
     }
   };
-//After the page is loaded, we want to add events to dynamically created elements.
-  $(document).ready(drupal_st.addEvents);
-    var social = '"Facebook:facebook","Tweet:twitter","LinkedIn:linkedin","Email:email","ShareThis:sharethis","Pinterest:pinterest"';
-    stlib_picker.setupPicker($("#myPicker"), [' . social . '], drupal_st.serviceCallback)
-//After it's all done, hide the text field for the service picker so that no one messes up the data.
-  $(document).ready(drupal_st.setupServiceText);
-})(jQuery);
+
+  $(document).ready(function(){
+    stlib_picker.setupPicker(jQuery("#myPicker"), drupalSettings.sharethis.service_string_markup, drupal_st.serviceCallback);
+    drupal_st.addEvents();
+    drupal_st.setupServiceText();
+
+  });
+})(jQuery, window);
