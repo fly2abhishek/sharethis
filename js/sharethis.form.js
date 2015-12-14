@@ -62,7 +62,7 @@
       return selectedButton;
     },
     setupServiceText: function () {
-      $("#edit-sharethis-service-option").css({display: "none"});
+      $("#edit-service-option").css({display: "none"});
 
       if ($('input[name=sharethis_callesi]').val() == 1) {
         drupal_st.getGlobalCNSConfig();
@@ -97,14 +97,14 @@
     },
     // Function to add various events to our html form elements.
     addEvents: function () {
-      $("#edit-sharethis-widget-option-st-multi").click(drupal_st.multiW);
-      $("#edit-sharethis-widget-option-st-direct").click(drupal_st.classicW);
+      $("#edit-widget-option-st-multi").click(drupal_st.multiW);
+      $("#edit-widget-option-st-direct").click(drupal_st.classicW);
 
-      $("#edit-sharethis-button-option-stbc-").click(drupal_st.smallChicklet);
-      $("#edit-sharethis-button-option-stbc-large").click(drupal_st.largeChicklet);
-      $("#edit-sharethis-button-option-stbc-hcount").click(drupal_st.hcount);
-      $("#edit-sharethis-button-option-stbc-vcount").click(drupal_st.vcount);
-      $("#edit-sharethis-button-option-stbc-button").click(drupal_st.button);
+      $("#edit-button-option-stbc-").click(drupal_st.smallChicklet);
+      $("#edit-button-option-stbc-large").click(drupal_st.largeChicklet);
+      $("#edit-button-option-stbc-hcount").click(drupal_st.hcount);
+      $("#edit-button-option-stbc-vcount").click(drupal_st.vcount);
+      $("#edit-button-option-stbc-button").click(drupal_st.button);
 
       $(".st_formButtonSave").click(drupal_st.updateOptions);
 
@@ -118,7 +118,7 @@
         outputString += services[i] + "\","
       }
       outputString = outputString.substring(0, outputString.length - 1);
-      $("#edit-sharethis-service-option").attr("value", outputString);
+      $("#edit-service-option").attr("value", outputString);
     },
     to_boolean: function (str) {
       return str === true || $.trim(str).toLowerCase() === 'true';
