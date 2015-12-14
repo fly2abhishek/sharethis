@@ -140,7 +140,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#default_value' => $service_string,
       '#maxlength' => 1024,
     );
-
+   // kint($config->get('option_extras')); exit;
     $form['options']['option_extras'] = array(
       '#title' => t('Extra services'),
       '#description' => t('Select additional services which will be available. These are not officially supported by ShareThis, but are available.'),
@@ -149,7 +149,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
         'Google Plus One:plusone' => t('Google Plus One'),
         'Facebook Like:fblike' => t('Facebook Like'),
       ],
-      '#default_value' => $config->get('options_extra'),
+      '#default_value' => $config->get('option_extras'),
     );
 
     $form['options']['callesi'] = array(
@@ -183,7 +183,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
     // currently selected location.
     foreach (array('links', 'content', 'block') as $location_type) {
       $form['context'][$location_type]['#type'] = 'container';
-      $form['context'][$location_type]['#states']['visible'][':input[name="sharethis_location"]'] = array('value' => $location_type);
+      $form['context'][$location_type]['#states']['visible'][':input[name="location"]'] = array('value' => $location_type);
     }
 
     // Add help text for the 'content' location.
