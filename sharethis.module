@@ -3,7 +3,6 @@
  * @file
  * A module that adds one of the ShareThis widget to your website.
  */
-use Drupal;
 use Drupal\node\Entity\NodeType;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -59,21 +58,21 @@ function sharethis_get_options_array() {
   }
 
   return array(
-    'buttons' => Drupal::config('sharethis.settings')->get('button_option', 'stbc_button'),
-    'publisherID' => Drupal::config('sharethis.settings')->get('publisherID'),
-    'services' => Drupal::config('sharethis.settings')->get('service_option'),
-    'option_extras' => Drupal::config('sharethis.settings')->get('option_extras'),
-    'widget' => Drupal::config('sharethis.settings')->get('widget_option'),
-    'onhover' => Drupal::config('sharethis.settings')->get('option_onhover'),
-    'neworzero' => Drupal::config('sharethis.settings')->get('option_neworzero'),
-    'twitter_suffix' => Drupal::config('sharethis.settings')->get('twitter_suffix'),
-    'twitter_handle' => Drupal::config('sharethis.settings')->get('twitter_handle'),
-    'twitter_recommends' => Drupal::config('sharethis.settings')->get('twitter_recommends'),
-    'late_load' => Drupal::config('sharethis.settings')->get('late_load'),
+    'buttons' => \Drupal::config('sharethis.settings')->get('button_option', 'stbc_button'),
+    'publisherID' => \Drupal::config('sharethis.settings')->get('publisherID'),
+    'services' => \Drupal::config('sharethis.settings')->get('service_option'),
+    'option_extras' => \Drupal::config('sharethis.settings')->get('option_extras'),
+    'widget' => \Drupal::config('sharethis.settings')->get('widget_option'),
+    'onhover' => \Drupal::config('sharethis.settings')->get('option_onhover'),
+    'neworzero' => \Drupal::config('sharethis.settings')->get('option_neworzero'),
+    'twitter_suffix' => \Drupal::config('sharethis.settings')->get('twitter_suffix'),
+    'twitter_handle' => \Drupal::config('sharethis.settings')->get('twitter_handle'),
+    'twitter_recommends' => \Drupal::config('sharethis.settings')->get('twitter_recommends'),
+    'late_load' => \Drupal::config('sharethis.settings')->get('late_load'),
     'view_modes' => $view_modes,
-    'sharethis_cns' => Drupal::config('sharethis.settings')->get('cns'),
-    'sharethis_callesi' => (NULL == Drupal::config('sharethis.settings')->get('sharethis_cns'))?1:0,
-    'node_types' => Drupal::config('sharethis.settings')->get('node_types'),
-    'shorten' => Drupal::config('sharethis.settings')->get('option_shorten'),
+    'sharethis_cns' => \Drupal::config('sharethis.settings')->get('cns'),
+    'sharethis_callesi' => (NULL == \Drupal::config('sharethis.settings')->get('sharethis_cns')) ? 1 : 0,
+    'node_types' => \Drupal::config('sharethis.settings')->get('node_types'),
+    'shorten' => \Drupal::config('sharethis.settings')->get('option_shorten'),
   );
 }
