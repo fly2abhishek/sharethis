@@ -7,7 +7,6 @@
 
 namespace Drupal\sharethis\Form;
 
-use Drupal;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -140,7 +139,6 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#default_value' => $service_string,
       '#maxlength' => 1024,
     );
-   // kint($config->get('option_extras')); exit;
     $form['options']['option_extras'] = array(
       '#title' => t('Extra services'),
       '#description' => t('Select additional services which will be available. These are not officially supported by ShareThis, but are available.'),
@@ -329,7 +327,8 @@ class SharethisConfigurationForm extends ConfigFormBase {
     $input_values = $form_state->getUserInput();
 
     // Additional filters for the service option input.
-    // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code.
+    // Sanitize the publisher ID option.
+    // Since it's a text field, remove anything that resembles code.
     $input_values['service_option'] = Xss::filter($input_values['service_option']);
 
     // Additional filters for the option extras input.
@@ -365,9 +364,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
     //$form_state->getValues();
    // print '<pre>';print_r($form_state->getValues());print '</pre>';
   //  kint($input_values);
-   // exit;
     // If the location is changing to/from 'content', clear the Field Info cache.
-   // kint($this->config()); exit;
     $current_location = $config->get('location');
     $new_location = $input_values['location'];
     if (($current_location == 'content' || $new_location == 'content') && $current_location != $new_location) {
