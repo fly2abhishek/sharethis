@@ -373,9 +373,9 @@ class SharethisConfigurationForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $input_values = $form_state->getUserInput();
     $config = $this->config('sharethis.settings');
-    //$form_state->getValues();
-   // print '<pre>';print_r($form_state->getValues());print '</pre>';
-  //  kint($input_values);
+    // $form_state->getValues();
+    // print '<pre>';print_r($form_state->getValues());print '</pre>';
+    //  kint($input_values);
     // If the location is changing to/from 'content', clear the Field Info cache.
     $current_location = $config->get('location');
     $new_location = $input_values['location'];

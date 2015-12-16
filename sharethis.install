@@ -10,7 +10,7 @@
  */
 function sharethis_install() {
   \Drupal::configFactory()->getEditable('sharethis.settings')
-    ->set('publisherID',sharethis_create_publisher_key())
+    ->set('publisherID', sharethis_create_publisher_key())
     ->save();
 }
 
@@ -19,13 +19,13 @@ function sharethis_install() {
  */
 function sharethis_create_publisher_key() {
   $pubkey = "dr-";
-  $pubkey .= dechex(mt_rand( 0, 0xffff ));
-  $pubkey .= dechex(mt_rand( 0, 0xffff )) . "-";
-  $pubkey .= dechex(mt_rand( 0, 0xffff )) . "-";
-  $pubkey .= dechex(mt_rand( 0, 0xffff )) . "-";
-  $pubkey .= dechex(mt_rand( 0, 0xffff )) . "-";
-  $pubkey .= dechex(mt_rand( 0, 0xffff ));
-  $pubkey .= dechex(mt_rand( 0, 0xffff ));
-  $pubkey .= dechex(mt_rand( 0, 0xffff ));
+  $pubkey .= dechex(mt_rand(0, 0xffff));
+  $pubkey .= dechex(mt_rand(0, 0xffff)) . "-";
+  $pubkey .= dechex(mt_rand(0, 0xffff)) . "-";
+  $pubkey .= dechex(mt_rand(0, 0xffff)) . "-";
+  $pubkey .= dechex(mt_rand(0, 0xffff)) . "-";
+  $pubkey .= dechex(mt_rand(0, 0xffff));
+  $pubkey .= dechex(mt_rand(0, 0xffff));
+  $pubkey .= dechex(mt_rand(0, 0xffff));
   return $pubkey;
 }

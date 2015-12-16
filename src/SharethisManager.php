@@ -40,8 +40,8 @@ class SharethisManager implements SharethisManagerInterface {
     $default_sharethis_nodetypes = array('article' => 'article', 'page' => 'page');
     $view_modes = array();
     foreach (array_keys(NodeType::loadMultiple()) as $type) {
-      //$view_modes[$type] = Drupal::config('sharethis.settings')->get('sharethis_' . $type . '_options');
-      $view_modes[$type] = array("article"=>"article", "page"=>"page");
+      // $view_modes[$type] = Drupal::config('sharethis.settings')->get('sharethis_' . $type . '_options');.
+      $view_modes[$type] = array("article" => "article", "page" => "page");
     }
 
     return [
@@ -63,4 +63,5 @@ class SharethisManager implements SharethisManagerInterface {
       'shorten' => $sharethisConfig->get('option_shorten'),
     ];
   }
+
 }

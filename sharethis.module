@@ -3,7 +3,6 @@
  * @file
  * A module that adds one of the ShareThis widget to your website.
  */
-use Drupal\node\Entity\NodeType;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
 
