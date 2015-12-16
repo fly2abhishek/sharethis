@@ -13,6 +13,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sharethis\SharethisManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,18 +36,28 @@ class SharethisConfigurationForm extends ConfigFormBase {
   protected $entityManager;
 
   /**
+   * The sharethis manager.
+   *
+   * @var \Drupal\sharethis\SharethisManagerInterface
+   */
+  protected $sharethisManager;
+
+  /**
    * Constructs a \Drupal\user\SharethisConfigurationForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
+   * @param \Drupal\sharethis\SharethisManagerInterface $sharethisManager
+   *   The sharethis Manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, EntityManagerInterface $entity_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, EntityManagerInterface $entity_manager, SharethisManagerInterface $sharethisManager) {
     parent::__construct($config_factory);
 
     $this->moduleHandler = $module_handler;
     $this->entityManager = $entity_manager;
+    $this->sharethisManager = $sharethisManager;
   }
 
   /**
@@ -56,7 +67,8 @@ class SharethisConfigurationForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('module_handler'),
-      $container->get('entity.manager')
+      $container->get('entity.manager'),
+      $container->get('sharethis.manager')
     );
   }
 
@@ -87,7 +99,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
     // Load the css and js for our module's configuration.
     $config = $this->config('sharethis.settings');
 
-    $current_options_array = sharethis_get_options_array();
+    $current_options_array = $this->sharethisManager->getOptions();
     // Create the variables related to widget choice.
     $widget_type = $current_options_array['widget'];
     $widget_markup = "";

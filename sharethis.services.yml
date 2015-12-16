@@ -1,0 +1,6 @@
+services:
+  sharethis.manager:
+    class: Drupal\sharethis\SharethisManager
+    tags:
+      - {name: sharethis_manager}
+    arguments: ['@config.factory']
