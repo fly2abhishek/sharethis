@@ -21,28 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterface {
-
-  /**
-   * The module manager service.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
-   * The date formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
-
-  /**
-   * The config object for 'sharethis.settings'.
-   *
-   * @var \Drupal\Core\Config\Config
-   */
-  protected $autoLogoutSettings;
-
   /**
    * Constructs an SharethisBlock object.
    *
