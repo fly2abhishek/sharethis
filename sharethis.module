@@ -27,16 +27,21 @@ function sharethis_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
- * Converts given value to boolean.
- *
- * @param val
- *   Which value to convert to boolean
+ * Implements hook_theme().
  */
-function to_boolean($val) {
-  if (strtolower(trim($val)) === 'false') {
-    return FALSE;
-  }
-  else {
-    return (boolean) $val;
-  }
+function sharethis_theme($existing, $type, $theme, $path) {
+  return array(
+    'sharethis_block' => array(
+      'variables' => array('content' => $markup),
+      'function' => 'theme_sharethis_block',
+    ),
+  );
+  return $theme;
+}
+
+/**
+ * Theme function for ShareThis code based on settings.
+ */
+function theme_sharethis_block($variables) {
+  return '<div class="sharethis-wrapper">' . $variables['content']['st_spans'] . '</div>';
 }
