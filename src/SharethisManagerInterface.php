@@ -45,6 +45,8 @@ interface SharethisManagerInterface {
    *
    * @param val
    *   Which value to convert to boolean
+   *
+   * @todo To be replaced with bool
    */
   function to_boolean($val);
 

@@ -21,6 +21,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The config object for 'sharethis.settings'.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $sharethisSettings;
   /**
    * Constructs an SharethisBlock object.
    *

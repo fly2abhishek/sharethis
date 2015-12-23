@@ -24,6 +24,7 @@ class SharethisManager implements SharethisManagerInterface {
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
+  protected $config;
 
   /**
    * Constructs an SharethisManager object.
@@ -31,8 +32,9 @@ class SharethisManager implements SharethisManagerInterface {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The Configuration Factory.
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
+  public function __construct(ConfigFactoryInterface $config_factory, TitleResolverInterface $title_resolver) {
     $this->configFactory = $config_factory;
+    $this->titleResolver = $title_resolver;
   }
 
   /**
@@ -73,20 +75,21 @@ class SharethisManager implements SharethisManagerInterface {
    */
   function blockContents() {
     $sharethisConfig = $this->configFactory->get('sharethis.settings');
+    $config = $this->configFactory->get('system.site');
     if ($sharethisConfig->get('location') == 'block') {
       // First get all of the options for the sharethis widget from the database:
       $data_options = $this->getOptions();
       $current_path = $_GET['q'];
-      $path = isset($current_path) ? $current_path : 'node';
-      if ($path == \Drupal::config('system.site')->get('page.front')) {
+      $path = isset($current_path) ? $current_path : '/node';
+      if ($path == $config->get('page.front')) {
         $path = "node";
       }
       $mpath = Url::fromRoute($path, ['absolute' => TRUE]);
       $mpath = ($mpath->getRouteName());
       $request = \Drupal::request();
       $route_match = \Drupal::routeMatch();
-      $mTitle = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-      $title = 'Welcome to stable';
+      $mTitle = $this->titleResolver->getTitle($request, $route_match->getRouteObject());
+      $title = is_object($mTitle) ? $mTitle->getUntranslatedString() : $config->get('name');
 
       foreach ($data_options['option_extras'] as $service) {
         $data_options['services'] .= ',"' . $service . '"';
@@ -170,12 +173,6 @@ class SharethisManager implements SharethisManagerInterface {
       foreach ($st_js_options as $name => $value) {
         $st_js .= 'var ' . $name . ' = ' . Json::decode($value) . ';';
 
-      }
-      if ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https')) {
-        $external = "https://ws.sharethis.com/button/buttons.js";
-      }
-      else {
-        $external = "http://w.sharethis.com/button/buttons.js";
       }
       $stlight = $this->get_stLight_options($data_options);
       $st_js = "if (stLight !== undefined) { stLight.options($stlight); }";

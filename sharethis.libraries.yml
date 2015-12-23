@@ -26,16 +26,14 @@ drupal.sharethispickerexternal:
       - core/jquery
 
 drupal.sharethispickerexternalbuttonsws:
-  version: VERSION
   js:
-    https://ws.sharethis.com/button/buttons.js: {}
+    https://ws.sharethis.com/button/buttons.js: { type: external }
   dependencies:
       - core/jquery
 
 drupal.sharethispickerexternalbuttons:
-  version: VERSION
   js:
-    http://w.sharethis.com/button/buttons.js: {}
+    http://w.sharethis.com/button/buttons.js: { type: external }
   dependencies:
       - core/jquery
 
