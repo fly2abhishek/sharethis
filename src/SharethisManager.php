@@ -24,7 +24,13 @@ class SharethisManager implements SharethisManagerInterface {
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
-  protected $config;
+
+  /**
+   * The config object.
+   *
+   * @var \Drupal\Core\Controller\TitleResolverInterface
+   */
+  protected $titleResolver;
 
   /**
    * Constructs an SharethisManager object.
@@ -225,4 +231,5 @@ class SharethisManager implements SharethisManagerInterface {
       return (boolean) $val;
     }
   }
+
 }
