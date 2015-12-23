@@ -25,13 +25,13 @@ drupal.sharethispickerexternal:
   dependencies:
       - core/jquery
 
-drupal.sharethispickerexternalbuttonsws:
+sharethispickerexternalbuttonsws:
   js:
     https://ws.sharethis.com/button/buttons.js: { type: external }
   dependencies:
       - core/jquery
 
-drupal.sharethispickerexternalbuttons:
+sharethispickerexternalbuttons:
   js:
     http://w.sharethis.com/button/buttons.js: { type: external }
   dependencies:

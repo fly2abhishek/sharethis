@@ -42,9 +42,10 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * @param \Drupal\Core\Config\Config $sharethis_settings
    *   The config object for 'sharethis.settings'.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Config $sharethis_settings) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Config $sharethis_settings, SharethisManagerInterface $sharethis) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->sharethisSettings = $sharethis_settings;
+    $this->sharethisManager = $sharethis;
   }
 
   /**
@@ -55,7 +56,8 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('config.factory')->get('sharethis.settings')
+      $container->get('config.factory')->get('sharethis.settings'),
+      $container->get('sharethis.manager')
     );
   }
 
@@ -63,15 +65,14 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function build() {
-    $sharethis_manager = \Drupal::service('sharethis.manager');
-    $markup = $sharethis_manager->blockContents();
+    $markup = $this->sharethisManager->blockContents();
     return [
       '#theme' => 'sharethis_block',
       '#content' => $markup,
       '#attached' => array(
         'library' => array(
-          'sharethis/drupal.sharethispickerexternalbuttonsws',
-          'sharethis/drupal.sharethispickerexternalbuttons',
+          'sharethis/sharethispickerexternalbuttonsws',
+          'sharethis/sharethispickerexternalbuttons',
         ),
       ),
     ];

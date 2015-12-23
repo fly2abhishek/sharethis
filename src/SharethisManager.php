@@ -225,5 +225,4 @@ class SharethisManager implements SharethisManagerInterface {
       return (boolean) $val;
     }
   }
-
 }

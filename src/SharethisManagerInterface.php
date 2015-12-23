@@ -23,7 +23,7 @@ interface SharethisManagerInterface {
   /**
    * Custom html block.
    *
-   * @return string
+   * @return array
    */
   public function blockContents();
 
@@ -45,6 +45,8 @@ interface SharethisManagerInterface {
    *
    * @param val
    *   Which value to convert to boolean
+   *
+   * @return bool
    *
    * @todo To be replaced with bool
    */
