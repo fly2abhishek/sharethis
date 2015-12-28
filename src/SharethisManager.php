@@ -12,6 +12,7 @@ use Drupal\node\Entity\NodeType;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Controller\TitleResolverInterface;
 
 /**
  * Defines an SharethisManager service.
