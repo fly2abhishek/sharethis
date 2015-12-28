@@ -27,7 +27,7 @@ class SharethisManager implements SharethisManagerInterface {
   protected $configFactory;
 
   /**
-   * The config object.
+   * The Title Resolver object.
    *
    * @var \Drupal\Core\Controller\TitleResolverInterface
    */
