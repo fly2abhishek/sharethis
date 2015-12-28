@@ -29,6 +29,14 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * @var \Drupal\Core\Config\Config
    */
   protected $sharethisSettings;
+
+  /**
+   * The Sharethis Manager.
+   *
+   * @var \Drupal\sharethis\SharethisManager
+   */
+  protected $sharethisManager;
+
   /**
    * Constructs an SharethisBlock object.
    *
@@ -43,10 +51,10 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * @param \Drupal\Core\Config\Config $sharethis_settings
    *   The config object for 'sharethis.settings'.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Config $sharethis_settings, SharethisManagerInterface $sharethis) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Config $sharethis_settings, SharethisManagerInterface $sharethisManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->sharethisSettings = $sharethis_settings;
-    $this->sharethisManager = $sharethis;
+    $this->sharethisManager = $sharethisManager;
   }
 
   /**
