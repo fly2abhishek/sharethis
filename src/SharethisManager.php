@@ -12,6 +12,7 @@ use Drupal\node\Entity\NodeType;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Controller\TitleResolverInterface;
 
 /**
  * Defines an SharethisManager service.
@@ -37,6 +38,8 @@ class SharethisManager implements SharethisManagerInterface {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The Configuration Factory.
+   * @param \Drupal\Core\Controller\TitleResolverInterface $title_resolver
+   *   The Title Resolver.
    */
   public function __construct(ConfigFactoryInterface $config_factory, TitleResolverInterface $title_resolver) {
     $this->configFactory = $config_factory;
@@ -52,7 +55,7 @@ class SharethisManager implements SharethisManagerInterface {
     $default_sharethis_nodetypes = array('article' => 'article', 'page' => 'page');
     $view_modes = array();
     foreach (array_keys(NodeType::loadMultiple()) as $type) {
-      $view_modes[$type] = array("article" => "article", "page" => "page");
+      $view_modes[$type] = array('article' => 'article', 'page' => 'page');
     }
 
     return [

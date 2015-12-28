@@ -13,7 +13,6 @@ option_neworzero: 0
 option_onhover: 1
 option_shorten: 1
 page_options: ''
-publisherID: 0
 service_option: '"Facebook:facebook","Tweet:twitter","LinkedIn:linkedin","Email:email","ShareThis:sharethis","Pinterest:pinterest"'
 twitter_handle: ''
 twitter_recommends: ''

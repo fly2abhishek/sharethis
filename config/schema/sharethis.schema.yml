@@ -49,7 +49,7 @@ sharethis.settings:
       type: string
       label: 'Page Options'
     publisherID:
-      type: integer
+      type: string
       label: 'Publisher ID'
     service_option:
       type: string
