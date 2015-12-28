@@ -1,0 +1,84 @@
+sharethis.settings:
+  type: config_object
+  mapping:
+    article_options:
+      type: string
+      label: 'Article Options'
+    button_option:
+      type: string
+      label: 'Max timeout value'
+    comments:
+      type: integer
+      label: 'Enable comments'
+    late_load:
+      type: integer
+      label: 'Enable late load'
+    location:
+      type: string
+      label: 'Location of the sharethis buttons'
+    node_types:
+      type: mapping
+      label: 'Node types'
+      mapping:
+        article:
+          type: string
+          label: 'Article'
+        page:
+          type: string
+          label: 'Page'
+    option_extras:
+      type: mapping
+      label: 'Options extra'
+      mapping:
+        Gplusone:
+          type: string
+          label: 'Google Plus One'
+        Fblike:
+          type: string
+          label: 'Facebook Like'
+    option_neworzero:
+      type: integer
+      label: 'Option New or Zero'
+    option_onhover:
+      type: integer
+      label: 'Option on hover'
+    option_shorten:
+      type: integer
+      label: 'Option Shorten'
+    page_options:
+      type: string
+      label: 'Page Options'
+    publisherID:
+      type: integer
+      label: 'Publisher ID'
+    service_option:
+      type: string
+      label: 'Service Option'
+    twitter_handle:
+      type: string
+      label: 'Twitter handle'
+    twitter_recommends:
+      type: string
+      label: 'Twitter Recommends'
+    twitter_suffix:
+      type: string
+      label: 'Twitter Suffix'
+    webform_options:
+      type: string
+      label: 'Webform Options'
+    weight:
+      type: integer
+      label: 'Weight'
+    widget_option:
+      type: string
+      label: 'Widget Option'
+    cns:
+      type: mapping
+      label: 'CNS'
+      mapping:
+        donotcopy:
+          type: integer
+          label: 'Do not Copy'
+        hashaddress:
+          type: integer
+          label: 'Has Address'

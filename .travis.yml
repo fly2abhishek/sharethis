@@ -34,7 +34,7 @@ env:
 
     # Configuration variables.
     - DRUPAL_TI_MODULE_NAME="sharethis"
-    - DRUPAL_TI_SIMPLETEST_GROUP="Share this"
+    - DRUPAL_TI_SIMPLETEST_GROUP="Sharethis"
 
     # Define runners and environment vars to include before and after the
     # main runners / environment vars.
