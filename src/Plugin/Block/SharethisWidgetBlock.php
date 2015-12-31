@@ -13,7 +13,6 @@ use Drupal\Core\Config\Config;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\sharethis\SharethisManagerInterface;
-use Drupal\Core\Url;
 
 /**
  * Provides an 'Share this Widget' block.
@@ -88,16 +87,16 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   function blockForm($form, FormStateInterface $form_state) {
     $formValues = $form_state->getUserInput();
-    $description = t('Variable - Different per URL');
+    $description = $this->t('Variable - Different per URL');
     $description .= '<br />';
-    $description .= t('External - Useful in iframes (Facebook Tabs, etc.)');
+    $description .= $this->t('External - Useful in iframes (Facebook Tabs, etc.)');
     $form['sharethis_path'] = array(
       '#type' => 'select',
-      '#title' => t('Path to share'),
+      '#title' => $this->t('Path to share'),
       '#options' => array(
-        'global' => t('Global'),
-        'current' => t('Variable'),
-        'external' => t('External URL'),
+        'global' => $this->t('Global'),
+        'current' => $this->t('Variable'),
+        'external' => $this->t('External URL'),
       ),
       '#description' => $description,
       '#default_value' => $this->configuration['sharethis_path'],
@@ -105,7 +104,7 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
 
     $form['sharethis_path_external'] = array(
       '#type' => 'url',
-      '#title' => t('External URL'),
+      '#title' => $this->t('External URL'),
       '#default_value' => $this->configuration['sharethis_path_external'],
       '#states' => array(
         'visible' => array(
@@ -131,17 +130,19 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   public function build() {
     if ($this->configuration['sharethis_path'] == 'external') {
-      $url = $this->configuration['sharethis_path_external'];
+      $mpath = $this->configuration['sharethis_path_external'];
     }
     else {
       $current_path = \Drupal::url('<current>');
-      $url = ($this->configuration['sharethis_path'] == 'global') ? '<front>' : $current_path ;
+      $mpath = ($this->configuration['sharethis_path'] == 'global') ? '<front>' : $current_path;
     }
     $request = \Drupal::request();
     $route_match = \Drupal::routeMatch();
     $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+    $title = !empty($title) ? $title->getUntranslatedString() : $title;
     $mtitle = ($this->configuration['sharethis_path'] == 'current') ? $title : \Drupal::config('system.site')->get('name');
-    $markup = $this->sharethisManager->widgetContents(array('m_path' => $url, 'm_title' => $mtitle));
+    $markup = $this->sharethisManager->widgetContents(array('m_path' => $mpath, 'm_title' => $mtitle));
     return [
       '#theme' => 'sharethis_block',
       '#content' => $markup,
@@ -154,3 +155,4 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
   }
 }
+

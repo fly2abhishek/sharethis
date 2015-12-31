@@ -31,6 +31,7 @@ interface SharethisManagerInterface {
    * Custom html markup for widget.
    *
    * @param $array
+   *
    * @return array
    */
   public function widgetContents($array);
@@ -59,5 +60,14 @@ interface SharethisManagerInterface {
    * @todo To be replaced with bool
    */
   function to_boolean($val);
+
+  /**
+   * Custom html block.
+   *
+   * @param array, string, string
+   *
+   * @return array
+   */
+  public function renderSpans($array, $string, $string);
 
 }
