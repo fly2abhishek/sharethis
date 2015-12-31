@@ -7,8 +7,8 @@ node_types:
   article: article
   page: page
 option_extras:
-  'Gplusone': 'Google Plus One:plusone'
-  'Fblike': 'Facebook Like:fblike'
+  'Google Plus One:plusone': 'Google Plus One:plusone'
+  'Facebook Like:fblike': 'Facebook Like:fblike'
 option_neworzero: 0
 option_onhover: 1
 option_shorten: 1

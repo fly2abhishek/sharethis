@@ -28,6 +28,14 @@ interface SharethisManagerInterface {
   public function blockContents();
 
   /**
+   * Custom html markup for widget.
+   *
+   * @param $array
+   * @return array
+   */
+  public function widgetContents($array);
+
+  /**
    * Include st js scripts.
    */
   public function sharethis_include_js();

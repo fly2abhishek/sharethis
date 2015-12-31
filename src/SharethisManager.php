@@ -164,6 +164,75 @@ class SharethisManager implements SharethisManagerInterface {
 
     }
   }
+  /**
+   * {@inheritdoc}
+   */
+  function widgetContents($settings) {
+    $mpath = $settings['m_path'];
+    $title = $settings['m_title'];
+    $data_options = $this->getOptions();
+    foreach ($data_options['option_extras'] as $service) {
+      $data_options['services'] .= ',"' . $service . '"';
+    }
+
+    // The share buttons are simply spans of the form class='st_SERVICE_BUTTONTYPE' -- "st" stands for ShareThis.
+    $type = Unicode::substr($data_options['buttons'], 4);
+    $type = $type == "_" ? "" : Html::escape($type);
+    $service_array = explode(",", $data_options['services']);
+    $st_spans = "";
+    foreach ($service_array as $service_full) {
+      // Strip the quotes from the element in the array (They are there for javascript).
+      $service = explode(":", $service_full);
+
+      // Service names are expected to be parsed by Name:machine_name. If only one
+      // element in the array is given, it's an invalid service.
+      if (count($service) < 2) {
+        continue;
+      }
+
+      // Find the service code name.
+      $serviceCodeName = Unicode::substr($service[1], 0, -1);
+
+      // Switch the title on a per-service basis if required.
+      // $title = $title;.
+      switch ($serviceCodeName) {
+        case 'twitter':
+          $title = empty($data_options['twitter_suffix']) ? $title : Html::escape($title) . ' ' . Html::escape($data_options['twitter_suffix']);
+          break;
+      }
+
+      // Sanitize the service code for display.
+      $display = Html::escape($serviceCodeName);
+
+      // Put together the span attributes.
+      $attributes = array(
+        'st_url' => $mpath,
+        'st_title' => $title,
+        'class' => 'st_' . $display . $type,
+      );
+      if ($serviceCodeName == 'twitter') {
+        if (!empty($data_options['twitter_handle'])) {
+          $attributes['st_via'] = $data_options['twitter_handle'];
+          $attributes['st_username'] = $data_options['twitter_recommends'];
+        }
+      }
+      // Only show the display text if the type is set.
+      if (!empty($type)) {
+        $attributes['displayText'] = Html::escape($display);
+      }
+      $meta_generator = array(
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#attributes' => $attributes,
+        // It's an empty span tag.
+        '#value' => '',
+      );
+      // Render the span tag.
+      $st_spans .= drupal_render($meta_generator);
+    }
+    $this->sharethis_include_js();
+    return ['data_options' => $data_options, 'm_path' => $mPath, 'm_title' => $mTitle , 'st_spans' => $st_spans];
+  }
 
   /**
    * {@inheritdoc}
