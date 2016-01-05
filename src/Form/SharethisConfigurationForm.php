@@ -153,12 +153,12 @@ class SharethisConfigurationForm extends ConfigFormBase {
       '#maxlength' => 1024,
     );
     $form['options']['option_extras'] = array(
-      '#title' => t('Extra services'),
-      '#description' => t('Select additional services which will be available. These are not officially supported by ShareThis, but are available.'),
+      '#title' => $this->t('Extra services'),
+      '#description' => $this->t('Select additional services which will be available. These are not officially supported by ShareThis, but are available.'),
       '#type' => 'checkboxes',
       '#options' => [
-        'Gplusone' => t('Google Plus One'),
-        'Fblike' => t('Facebook Like'),
+        'Google Plus One:plusone' => $this->t('Google Plus One'),
+        'Facebook Like:fblike' => $this->t('Facebook Like'),
       ],
       '#default_value' => $config->get('option_extras'),
     );

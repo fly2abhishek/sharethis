@@ -28,6 +28,15 @@ interface SharethisManagerInterface {
   public function blockContents();
 
   /**
+   * Custom html markup for widget.
+   *
+   * @param $array
+   *
+   * @return array
+   */
+  public function widgetContents($array);
+
+  /**
    * Include st js scripts.
    */
   public function sharethis_include_js();
@@ -51,5 +60,14 @@ interface SharethisManagerInterface {
    * @todo To be replaced with bool
    */
   function to_boolean($val);
+
+  /**
+   * Custom html block.
+   *
+   * @param array, string, string
+   *
+   * @return array
+   */
+  public function renderSpans($array, $string, $string);
 
 }
