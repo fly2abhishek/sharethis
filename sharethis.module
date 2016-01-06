@@ -172,13 +172,13 @@ function sharethis_comment_view(array &$build, EntityInterface $comment, EntityV
     $current_path = \Drupal::routeMatch()->getRouteName() ? Url::fromRouteMatch(\Drupal::routeMatch())->getInternalPath() : '';
     $path = isset($current_path) ? $current_path : '<front>';
     global $base_url;
-    $Path = Url::fromUri($base_url . '/' . $path,
+    $path_obj = Url::fromUri($base_url . '/' . $path,
       array(
         'absolute' => TRUE,
         'fragment' => 'comment-' . $comment->id(),
       )
     );
-    $mPath = $Path->toString();
+    $mPath = $path_obj->toString();
     $request = \Drupal::request();
     $route_match = \Drupal::routeMatch();
     $mTitle = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
