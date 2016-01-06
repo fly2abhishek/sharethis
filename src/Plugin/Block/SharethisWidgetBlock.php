@@ -153,5 +153,5 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
       ),
     ];
   }
-}
 
+}

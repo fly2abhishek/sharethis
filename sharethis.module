@@ -6,9 +6,8 @@
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\node\NodeInterface;
-use Drupal\node\NodeTypeInterface;
-use Drupal\node\Entity\Node;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
 
 /**
  * Implements hook_help().
@@ -61,7 +60,7 @@ function sharethis_entity_extra_field_info() {
   $sharethisSettings = \Drupal::config('sharethis.settings');
   $extra = array();
   // Only add extra fields if the location is the node content.
-  if (\Drupal::config('sharethis.settings')->get('location') == 'content') {
+  if ($sharethisSettings->get('location') == 'content') {
     $entity_info = \Drupal::entityManager()->getAllBundleInfo('node');
     foreach ($entity_info['node'] as $bundle => $bundle_info) {
       $extra['node'][$bundle]['display'] = array(
@@ -102,17 +101,16 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
   // First get all of the options for the sharethis widget from the database:
   $data_options = $sharethis_manager->getOptions();
 
- // Get the full path to insert into the Share Buttons.
+  // Get the full path to insert into the Share Buttons.
   $mPath = $node->urlInfo();
   $mPath = $mPath->getInternalPath();
   $mTitle = $node->getTitle();
-
   // Check where we want to display the ShareThis widget.
   switch ($sharethisSettings->get('location')) {
     case 'content':
       $enabled_types = $data_options['node_types'];
       if (isset($enabled_types[$node->bundle()]) && $enabled_types[$node->bundle()] === $node->bundle()) {
-        $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath) ;
+        $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
         $build['sharethis_content'] = array(
           '#theme' => 'sharethis_block',
           '#content' => $content,
@@ -123,6 +121,39 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
             ),
           ),
           '#weight' => $sharethisSettings->get('location'),
+        );
+      }
+      break;
+
+    case 'links':
+      $enabled_view_modes = $sharethisSettings->get($node->bundle() . '_options_modes');
+      if (isset($enabled_view_modes[$view_mode]) && $enabled_view_modes[$view_mode]) {
+        $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
+        $links['sharethis'] = array(
+          'html' => TRUE,
+          'title' => array(
+            '#theme' => 'sharethis_block',
+            '#content' => $content,
+            '#attached' => array(
+              'library' => array(
+                'sharethis/sharethispickerexternalbuttonsws',
+                'sharethis/sharethispickerexternalbuttons',
+              ),
+            ),
+          ),
+          'attributes' => array('class' => 'sharethis-buttons'),
+        );
+        $build['links'] = array(
+          'html' => TRUE,
+          '#theme' => 'links',
+          '#links' => $links,
+          '#attributes' => array(
+            'class' => array('links', 'inline'),
+          ),
+        // Wrap it in a div.
+          '#tag' => 'div',
+          '#type' => 'html_tag',
+          '#weight' => 10,
         );
       }
       break;
