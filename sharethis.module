@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
 
+
 /**
  * Implements hook_help().
  */
@@ -157,5 +158,42 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
         );
       }
       break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function sharethis_comment_view(array &$build, EntityInterface $comment, EntityViewDisplayInterface $display, $view_mode) {
+  $sharethis_manager = \Drupal::service('sharethis.manager');
+  $sharethisSettings = \Drupal::config('sharethis.settings');
+  if ($sharethisSettings->get('comments') == 1) {
+    $data_options = $sharethis_manager->getOptions();
+    $current_path = \Drupal::routeMatch()->getRouteName() ? Url::fromRouteMatch(\Drupal::routeMatch())->getInternalPath() : '';
+    $path = isset($current_path) ? $current_path : '<front>';
+    global $base_url;
+    $path_obj = Url::fromUri($base_url . '/' . $path,
+      array(
+        'absolute' => TRUE,
+        'fragment' => 'comment-' . $comment->id(),
+      )
+    );
+    $mPath = $path_obj->toString();
+    $request = \Drupal::request();
+    $route_match = \Drupal::routeMatch();
+    $mTitle = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+    $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
+    $build['sharethis_comments'] = array(
+      '#theme' => 'sharethis_block',
+      '#content' => $content,
+      '#attached' => array(
+        'library' => array(
+          'sharethis/sharethispickerexternalbuttonsws',
+          'sharethis/sharethispickerexternalbuttons',
+        ),
+      ),
+      '#attributes' => array('class' => 'sharethis-comment'),
+      '#weight' => $sharethisSettings->get('location'),
+    );
   }
 }
