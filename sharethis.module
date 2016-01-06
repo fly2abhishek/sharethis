@@ -5,6 +5,9 @@
  */
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
 
 /**
  * Implements hook_help().
@@ -48,4 +51,111 @@ function sharethis_theme($existing, $type, $theme, $path) {
  */
 function theme_sharethis_block($variables) {
   return '<div class="sharethis-wrapper">' . $variables['content']['st_spans'] . '</div>';
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function sharethis_entity_extra_field_info() {
+  $sharethisSettings = \Drupal::config('sharethis.settings');
+  $extra = array();
+  // Only add extra fields if the location is the node content.
+  if ($sharethisSettings->get('location') == 'content') {
+    $entity_info = \Drupal::entityManager()->getAllBundleInfo('node');
+    foreach ($entity_info['node'] as $bundle => $bundle_info) {
+      $extra['node'][$bundle]['display'] = array(
+        'sharethis' => array(
+          'label' => t('ShareThis'),
+          'description' => t('ShareThis links'),
+          'weight' => $sharethisSettings->get('weight'),
+        ),
+      );
+    }
+  }
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for node entities.
+ *
+ * Inserts ShareThis widget code onto each node view.
+ * TODO: Want to add the option somewhere to select nodes.
+ *
+ * @param node
+ *   The node that is being acted upon
+ * @param view_mode
+ *   The type of view (teaser, full, etc)
+ * @param langcode
+ *   Information about the language
+ */
+function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  $sharethis_manager = \Drupal::service('sharethis.manager');
+  $sharethisSettings = \Drupal::config('sharethis.settings');
+  // Don't display if the user is currently searching, or in the RSS feed.
+  switch ($view_mode) {
+    case 'search_result':
+    case 'search_index':
+    case 'rss':
+      return;
+  }
+  // First get all of the options for the sharethis widget from the database:
+  $data_options = $sharethis_manager->getOptions();
+
+  // Get the full path to insert into the Share Buttons.
+  $mPath = $node->urlInfo();
+  $mPath = $mPath->getInternalPath();
+  $mTitle = $node->getTitle();
+  // Check where we want to display the ShareThis widget.
+  switch ($sharethisSettings->get('location')) {
+    case 'content':
+      $enabled_types = $data_options['node_types'];
+      if (isset($enabled_types[$node->bundle()]) && $enabled_types[$node->bundle()] === $node->bundle()) {
+        $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
+        $build['sharethis_content'] = array(
+          '#theme' => 'sharethis_block',
+          '#content' => $content,
+          '#attached' => array(
+            'library' => array(
+              'sharethis/sharethispickerexternalbuttonsws',
+              'sharethis/sharethispickerexternalbuttons',
+            ),
+          ),
+          '#weight' => $sharethisSettings->get('location'),
+        );
+      }
+      break;
+
+    case 'links':
+      $enabled_view_modes = $sharethisSettings->get($node->bundle() . '_options_modes');
+      if (isset($enabled_view_modes[$view_mode]) && $enabled_view_modes[$view_mode]) {
+        $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
+        $links['sharethis'] = array(
+          'html' => TRUE,
+          'title' => array(
+            '#theme' => 'sharethis_block',
+            '#content' => $content,
+            '#attached' => array(
+              'library' => array(
+                'sharethis/sharethispickerexternalbuttonsws',
+                'sharethis/sharethispickerexternalbuttons',
+              ),
+            ),
+          ),
+          'attributes' => array('class' => 'sharethis-buttons'),
+        );
+        $build['links'] = array(
+          'html' => TRUE,
+          '#theme' => 'links',
+          '#links' => $links,
+          '#attributes' => array(
+            'class' => array('links', 'inline'),
+          ),
+        // Wrap it in a div.
+          '#tag' => 'div',
+          '#type' => 'html_tag',
+          '#weight' => 10,
+        );
+      }
+      break;
+  }
 }

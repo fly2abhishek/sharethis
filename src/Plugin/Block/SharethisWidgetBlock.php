@@ -139,8 +139,7 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
     $request = \Drupal::request();
     $route_match = \Drupal::routeMatch();
     $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-
-    $title = !empty($title) ? $title->getUntranslatedString() : $title;
+    $title = is_object($title) ? $title->getUntranslatedString() : $title;
     $mtitle = ($this->configuration['sharethis_path'] == 'current') ? $title : \Drupal::config('system.site')->get('name');
     $markup = $this->sharethisManager->widgetContents(array('m_path' => $mpath, 'm_title' => $mtitle));
     return [
@@ -154,5 +153,5 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
       ),
     ];
   }
-}
 
+}

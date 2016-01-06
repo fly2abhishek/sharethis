@@ -222,7 +222,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
         '#description' => t('Select which view modes the ShareThis widget should appear on for %label nodes.', array('%label' => $bundle_info['label'])),
         '#type' => 'checkboxes',
         '#options' => $modes,
-        '#default_value' => $view_modes_selected[$bundle],
+        '#default_value' => $config->get($bundle . '_options_modes'),
       );
     }
     // Allow the user to choose which content types will have ShareThis added
@@ -374,15 +374,14 @@ class SharethisConfigurationForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $input_values = $form_state->getUserInput();
     $config = $this->config('sharethis.settings');
-    // $form_state->getValues();
-    // print '<pre>';print_r($form_state->getValues());print '</pre>';
-    //  kint($input_values);
     // If the location is changing to/from 'content', clear the Field Info cache.
     $current_location = $config->get('location');
     $new_location = $input_values['location'];
     if (($current_location == 'content' || $new_location == 'content') && $current_location != $new_location) {
       $this->entityManager->clearCachedFieldDefinitions();
     }
+    $entity_info = \Drupal::entityManager()->getAllBundleInfo('node');
+    $entity_types = $entity_info['node'];
     $config->set('button_option', $input_values['button_option'])
       ->set('service_option', $input_values['service_option'])
       ->set('option_extras', $input_values['option_extras'])
@@ -402,6 +401,9 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ->set('cns.donotcopy', $input_values['cns']['donotcopy'])
       ->set('cns.hashaddress', $input_values['cns']['hashaddress'])
       ->save();
+    foreach ($entity_types as $key => $entity_type) {
+      $config->set($key . '_options_modes', $input_values[$key . '_options'])->save();
+    }
     parent::submitForm($form, $form_state);
   }
 

@@ -75,6 +75,7 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   public function build() {
     $markup = $this->sharethisManager->blockContents();
+
     return [
       '#theme' => 'sharethis_block',
       '#content' => $markup,
