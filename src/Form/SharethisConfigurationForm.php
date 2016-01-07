@@ -372,7 +372,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $input_values = $form_state->getUserInput();
+    $values = $form_state->getValues();
     $config = $this->config('sharethis.settings');
     // If the location is changing to/from 'content', clear the Field Info cache.
     $current_location = $config->get('location');
@@ -382,24 +382,24 @@ class SharethisConfigurationForm extends ConfigFormBase {
     }
     $entity_info = \Drupal::entityManager()->getAllBundleInfo('node');
     $entity_types = $entity_info['node'];
-    $config->set('button_option', $input_values['button_option'])
-      ->set('service_option', $input_values['service_option'])
-      ->set('option_extras', $input_values['option_extras'])
-      ->set('callesi', $input_values['callesi'])
-      ->set('location', $input_values['location'])
-      ->set('node_types', $input_values['node_types'])
-      ->set('comments', $input_values['comments'])
-      ->set('weight', $input_values['weight'])
-      ->set('publisherID', $input_values['publisherID'])
-      ->set('late_load', $input_values['late_load'])
-      ->set('twitter_suffix', $input_values['twitter_suffix'])
-      ->set('twitter_handle', $input_values['twitter_handle'])
-      ->set('twitter_recommends', $input_values['twitter_recommends'])
-      ->set('option_onhover', $input_values['option_onhover'])
-      ->set('option_neworzero', $input_values['option_neworzero'])
-      ->set('option_shorten', $input_values['option_shorten'])
-      ->set('cns.donotcopy', $input_values['cns']['donotcopy'])
-      ->set('cns.hashaddress', $input_values['cns']['hashaddress'])
+    $config->set('button_option', $values['button_option'])
+      ->set('service_option', $values['service_option'])
+      ->set('option_extras', $values['option_extras'])
+      ->set('callesi', $values['callesi'])
+      ->set('location', $values['location'])
+      ->set('node_types', $values['node_types'])
+      ->set('comments', $values['comments'])
+      ->set('weight', $values['weight'])
+      ->set('publisherID', $values['publisherID'])
+      ->set('late_load', $values['late_load'])
+      ->set('twitter_suffix', $values['twitter_suffix'])
+      ->set('twitter_handle', $values['twitter_handle'])
+      ->set('twitter_recommends', $values['twitter_recommends'])
+      ->set('option_onhover', $values['option_onhover'])
+      ->set('option_neworzero', $values['option_neworzero'])
+      ->set('option_shorten', $values['option_shorten'])
+      ->set('cns.donotcopy', $values['cns']['donotcopy'])
+      ->set('cns.hashaddress', $values['cns']['hashaddress'])
       ->save();
     foreach ($entity_types as $key => $entity_type) {
       $config->set($key . '_options_modes', $input_values[$key . '_options'])->save();
