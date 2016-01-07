@@ -83,23 +83,26 @@ class SharethisManager implements SharethisManagerInterface {
    * {@inheritdoc}
    */
   function blockContents() {
+
     $sharethisConfig = $this->configFactory->get('sharethis.settings');
     $config = $this->configFactory->get('system.site');
     if ($sharethisConfig->get('location') == 'block') {
       // First get all of the options for the sharethis widget from the database:
       $data_options = $this->getOptions();
-      $current_path = $_GET['q'];
-      $path = isset($current_path) ? $current_path : '/node';
-      if ($path == $config->get('page.front')) {
-        $path = "node";
-      }
-      $mpath = Url::fromRoute($path, ['absolute' => TRUE]);
-      $mpath = ($mpath->getRouteName());
+      $current_path = \Drupal::routeMatch()->getRouteName() ? Url::fromRouteMatch(\Drupal::routeMatch())->getInternalPath() : '';
+      $path = isset($current_path) ? $current_path : '<front>';
+      global $base_url;
+      $path_obj = Url::fromUri($base_url . '/' . $path,
+        array(
+          'absolute' => TRUE,
+        )
+      );
+      $mPath = $path_obj->toString();
       $request = \Drupal::request();
       $route_match = \Drupal::routeMatch();
       $mTitle = $this->titleResolver->getTitle($request, $route_match->getRouteObject());
       $mtitle = is_object($mTitle) ? $mTitle->getUntranslatedString() : $config->get('name');
-      return $this->renderSpans($data_options, $mtitle, $mpath);
+      return $this->renderSpans($data_options, $mtitle, $mPath);
 
     }
   }
