@@ -22,28 +22,3 @@ function sharethis_views_data() {
   );
   return $data;
 }
-
-/**
- * Implements hook_views_data_alter().
- */
-// Function tracker_views_data_alter(&$data) {
-//  // Provide additional uid_touch handlers which are handled by tracker
-//  $data['node_field_data']['uid_touch_tracker'] = array(
-//    'group' => t('Tracker - User'),
-//    'title' => t('User posted or commented'),
-//    'help' => t('Display nodes only if a user posted the node or commented on the node.'),
-//    'argument' => array(
-//      'field' => 'uid',
-//      'name table' => 'users_field_data',
-//      'name field' => 'name',
-//      'id' => 'tracker_user_uid',
-//      'no group by' => TRUE,
-//    ),
-//    'filter' => array(
-//      'field' => 'uid',
-//      'name table' => 'users_field_data',
-//      'name field' => 'name',
-//      'id' => 'tracker_user_uid'
-//    ),
-//  );
-// }.
