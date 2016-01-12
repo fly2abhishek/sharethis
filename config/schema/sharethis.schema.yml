@@ -30,10 +30,10 @@ sharethis.settings:
       type: mapping
       label: 'Options extra'
       mapping:
-        Gplusone:
+        'Google Plus One:plusone':
           type: string
           label: 'Google Plus One'
-        Fblike:
+        'Facebook Like:fblike':
           type: string
           label: 'Facebook Like'
     option_neworzero:

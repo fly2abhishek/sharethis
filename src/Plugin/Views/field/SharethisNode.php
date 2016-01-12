@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\history\Plugin\views\field\HistoryUserTimestamp.
+ * Contains \Drupal\sharethis\Plugin\views\field\SharethisNode.
  */
 
 namespace Drupal\sharethis\Plugin\views\field;
