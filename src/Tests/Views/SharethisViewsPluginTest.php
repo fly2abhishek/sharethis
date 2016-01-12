@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Contains \Drupal\history\Tests\Views\SharethisViewsPluginTest.
+ */
+
+namespace Drupal\sharethis\Tests\Views;
+
+use Drupal\views\Views;
+use Drupal\views\Tests\ViewTestData;
+use Drupal\views\Tests\ViewTestBase;
+
+/**
+ * Tests the sharethis links appearing on node.
+ *
+ * @group history
+ *
+ * @see \Drupal\sharethis\Plugin\views\field\SharethisNode.
+ */
+class SharethisViewsPluginTest extends ViewTestBase {
+
+  /**
+   * Views used by this test.
+   *
+   * @var array
+   */
+
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  // Public static $modules = array('block','sharethis', 'sharethis_test_views', 'user');.
+  public static $modules = array('node', 'system_test', 'views', 'views_ui', 'user', 'sharethis', 'sharethis_test_views', 'menu_ui', 'block');
+  public static $testViews = array('test_sharethis');
+  /**
+   *
+   */
+  protected function setUp() {
+    parent::setUp();
+    // Create and login user.
+    $this->privileged_user = $this->drupalCreateUser(array('administer blocks', 'administer site configuration', 'access administration pages'));
+    $this->drupalLogin($this->privileged_user);
+    ViewTestData::createTestViews(get_class($this), array('sharethis_test_views'));
+  }
+
+  /**
+   * Tests the handlers.
+   */
+  public function testHandlers() {
+    $nodes = array();
+    $nodes[] = $this->drupalCreateNode();
+    $nodes[] = $this->drupalCreateNode();
+    // Test the sharethis field.
+    $view = Views::getView('test_sharethis');
+    $view->setDisplay('page_1');
+    $this->executeView($view);
+    $this->assertEqual(count($view->result), 2);
+    $output = $view->preview();
+    $this->setRawContent(\Drupal::service('renderer')->renderRoot($output));
+    $result = $this->xpath('//div[@class=:class]', array(':class' => 'sharethis-wrapper'));
+    $this->assertEqual(count($result), 2, 'Sharethis links found');
+  }
+
+}

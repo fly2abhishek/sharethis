@@ -1,0 +1,9 @@
+name: 'Sharethis test views'
+type: module
+description: 'Provides default views for sharethis tests.'
+package: Testing
+version: VERSION
+core: 8.x
+dependencies:
+  - sharethis
+  - views

@@ -63,15 +63,18 @@ function sharethis_entity_extra_field_info() {
   // Only add extra fields if the location is the node content.
   if ($sharethisSettings->get('location') == 'content') {
     $entity_info = \Drupal::entityManager()->getAllBundleInfo('node');
-    foreach ($entity_info['node'] as $bundle => $bundle_info) {
-      $extra['node'][$bundle]['display'] = array(
-        'sharethis' => array(
-          'label' => t('ShareThis'),
-          'description' => t('ShareThis links'),
-          'weight' => $sharethisSettings->get('weight'),
-        ),
-      );
+    if (isset($entity_info['node'])) {
+      foreach ($entity_info['node'] as $bundle => $bundle_info) {
+        $extra['node'][$bundle]['display'] = array(
+          'sharethis' => array(
+            'label' => t('ShareThis'),
+            'description' => t('ShareThis links'),
+            'weight' => $sharethisSettings->get('weight'),
+          ),
+        );
+      }
     }
+
   }
   return $extra;
 }
