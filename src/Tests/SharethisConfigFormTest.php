@@ -24,7 +24,9 @@ class SharethisConfigFormTest extends WebTestBase {
    * @var array
    */
   public static $modules = array('node', 'system_test', 'user', 'sharethis');
-
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp();
     // Create and log in admin user.

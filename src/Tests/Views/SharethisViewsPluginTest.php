@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\history\Tests\Views\SharethisViewsPluginTest.
+ * Contains \Drupal\sharethis\Tests\Views\SharethisViewsPluginTest.
  */
 
 namespace Drupal\sharethis\Tests\Views;
@@ -32,16 +32,15 @@ class SharethisViewsPluginTest extends ViewTestBase {
    *
    * @var array
    */
-  // Public static $modules = array('block','sharethis', 'sharethis_test_views', 'user');.
-  public static $modules = array('node', 'system_test', 'views', 'views_ui', 'user', 'sharethis', 'sharethis_test_views', 'menu_ui', 'block');
+  public static $modules = array('node', 'system_test', 'views', 'user', 'sharethis', 'sharethis_test_views');
   public static $testViews = array('test_sharethis');
   /**
-   *
+   * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
     // Create and login user.
-    $this->privileged_user = $this->drupalCreateUser(array('administer blocks', 'administer site configuration', 'access administration pages'));
+    $this->privileged_user = $this->drupalCreateUser(array( 'administer site configuration', 'access administration pages'));
     $this->drupalLogin($this->privileged_user);
     ViewTestData::createTestViews(get_class($this), array('sharethis_test_views'));
   }

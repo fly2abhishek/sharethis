@@ -21,7 +21,9 @@ class SharethisBlockTest extends WebTestBase {
    * @var array
    */
   public static $modules = array('system_test', 'node', 'block' , 'user', 'sharethis' , 'menu_ui');
-
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -45,4 +47,5 @@ class SharethisBlockTest extends WebTestBase {
 
     $block = $this->drupalPlaceBlock('sharethis_block', $settings);
   }
+
 }
