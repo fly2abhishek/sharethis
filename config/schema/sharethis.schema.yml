@@ -85,24 +85,8 @@ sharethis.settings:
       type: sequence
       label: 'Node Option Modes'
       sequence:
-        type: mapping
-        mapping:
-          full:
-            type: string
-            label: 'Full'
-          teaser:
-            type: string
-            label: 'Full'
-          print:
-            type: string
-            label: 'Full'
-          rss:
-            type: string
-            label: 'Full'
-          search_index:
-            type: string
-            label: 'Full'
-          search_result:
-            type: string
-            label: 'Full'
+        type: sequence
+        sequence:
+          type: string
+          label: 'View Modes'
 
