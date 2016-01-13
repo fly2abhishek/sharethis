@@ -1,4 +1,4 @@
-sharethis.settings:
+sharethis.settings.*:
   type: config_object
   mapping:
     article_options:
@@ -85,11 +85,28 @@ sharethis.settings:
         hashaddress:
           type: integer
           label: 'Has Address'
+    sharethisnodes:
+      type: sequence
+      label: 'Node Option Modes'
+      sequence:
+        type: mapping
+        mapping:
+          full:
+            type: string
+            label: 'Full'
+          teaser:
+            type: string
+            label: 'Full'
+          print:
+            type: string
+            label: 'Full'
+          rss:
+            type: string
+            label: 'Full'
+          search_index:
+            type: string
+            label: 'Full'
+          search_result:
+            type: string
+            label: 'Full'
 
-
-sharethis.settings.*_options_modes :
-  type: config_object
-    mapping:
-      full:
-        type: string
-        label: 'Full'
