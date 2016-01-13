@@ -16,6 +16,9 @@ sharethis.settings:
     location:
       type: string
       label: 'Location of the sharethis buttons'
+    callesi:
+      type: string
+      label: 'Callesi'
     node_types:
       type: mapping
       label: 'Node types'
@@ -82,3 +85,11 @@ sharethis.settings:
         hashaddress:
           type: integer
           label: 'Has Address'
+
+
+sharethis.settings.*_options_modes :
+  type: config_object
+    mapping:
+      full:
+        type: string
+        label: 'Full'
