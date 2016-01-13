@@ -1,4 +1,4 @@
-sharethis.settings.*:
+sharethis.settings:
   type: config_object
   mapping:
     article_options:
@@ -20,15 +20,11 @@ sharethis.settings.*:
       type: string
       label: 'Callesi'
     node_types:
-      type: mapping
+      type: sequence
       label: 'Node types'
-      mapping:
-        article:
-          type: string
-          label: 'Article'
-        page:
-          type: string
-          label: 'Page'
+      sequence:
+        type: string
+        label: 'Bundles'
     option_extras:
       type: mapping
       label: 'Options extra'

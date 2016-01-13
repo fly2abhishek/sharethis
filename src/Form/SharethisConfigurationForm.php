@@ -222,7 +222,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
         '#description' => t('Select which view modes the ShareThis widget should appear on for %label nodes.', array('%label' => $bundle_info['label'])),
         '#type' => 'checkboxes',
         '#options' => $modes,
-        '#default_value' => $config->get('sharethis'.$bundle),
+        '#default_value' => $config->get('sharethisnodes.'.$bundle),
       );
     }
     // Allow the user to choose which content types will have ShareThis added
