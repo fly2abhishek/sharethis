@@ -374,6 +374,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $entity_types = '';
     $values = $form_state->getValues();
+    $input_values = $form_state->getUserInput();
     $config = $this->config('sharethis.settings');
     // If the location is changing to/from 'content', clear the Field Info cache.
     $current_location = $config->get('location');
@@ -390,7 +391,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ->set('option_extras', $values['option_extras'])
       ->set('callesi', $values['callesi'])
       ->set('location', $values['location'])
-      ->set('node_types', $values['node_types'])
+      ->set('node_types', $input_values['node_types'])
       ->set('comments', $values['comments'])
       ->set('weight', $values['weight'])
       ->set('publisherID', $values['publisherID'])
