@@ -40,7 +40,7 @@ class SharethisViewsPluginTest extends ViewTestBase {
   protected function setUp() {
     parent::setUp();
     // Create and login user.
-    $this->privileged_user = $this->drupalCreateUser(array( 'administer site configuration', 'access administration pages'));
+    $this->privileged_user = $this->drupalCreateUser(array('administer site configuration', 'access administration pages'));
     $this->drupalLogin($this->privileged_user);
     ViewTestData::createTestViews(get_class($this), array('sharethis_test_views'));
   }

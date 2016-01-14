@@ -16,16 +16,15 @@ sharethis.settings:
     location:
       type: string
       label: 'Location of the sharethis buttons'
+    callesi:
+      type: string
+      label: 'Callesi'
     node_types:
-      type: mapping
+      type: sequence
       label: 'Node types'
-      mapping:
-        article:
-          type: string
-          label: 'Article'
-        page:
-          type: string
-          label: 'Page'
+      sequence:
+        type: string
+        label: 'Bundles'
     option_extras:
       type: mapping
       label: 'Options extra'
@@ -82,3 +81,12 @@ sharethis.settings:
         hashaddress:
           type: integer
           label: 'Has Address'
+    sharethisnodes:
+      type: sequence
+      label: 'Node Option Modes'
+      sequence:
+        type: sequence
+        sequence:
+          type: string
+          label: 'View Modes'
+

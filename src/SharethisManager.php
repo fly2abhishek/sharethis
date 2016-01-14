@@ -71,8 +71,8 @@ class SharethisManager implements SharethisManagerInterface {
       'twitter_recommends' => $sharethisConfig->get('twitter_recommends'),
       'late_load' => $sharethisConfig->get('late_load'),
       'view_modes' => $view_modes,
-      'sharethis_cns' => $sharethisConfig->get('cns'),
-      'sharethis_callesi' => (NULL == $sharethisConfig->get('sharethis_cns')) ? 1 : 0,
+      'cns' => $sharethisConfig->get('cns'),
+      'callesi' => (NULL == $sharethisConfig->get('cns')) ? 1 : 0,
       'node_types' => $sharethisConfig->get('node_types'),
       'shorten' => $sharethisConfig->get('option_shorten'),
     ];
@@ -150,9 +150,9 @@ class SharethisManager implements SharethisManagerInterface {
       'publisher' => $data_options['publisherID'],
     );
     $paramsStLight['version'] = ($data_options['widget'] == 'st_multi') ? "5x" : "4x";
-    if ($data_options['sharethis_callesi'] == 0) {
-      $paramsStLight["doNotCopy"] = !$this->to_boolean($data_options['sharethis_cns']['donotcopy']);
-      $paramsStLight["hashAddressBar"] = $this->to_boolean($data_options['sharethis_cns']['hashaddress']);
+    if ($data_options['callesi'] == 0) {
+      $paramsStLight["doNotCopy"] = !$this->to_boolean($data_options['cns']['donotcopy']);
+      $paramsStLight["hashAddressBar"] = $this->to_boolean($data_options['cns']['hashaddress']);
       if (!($paramsStLight["hashAddressBar"]) && $paramsStLight["doNotCopy"]) {
         $paramsStLight["doNotHash"] = TRUE;
       }

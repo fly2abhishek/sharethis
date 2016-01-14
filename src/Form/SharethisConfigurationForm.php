@@ -222,7 +222,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
         '#description' => t('Select which view modes the ShareThis widget should appear on for %label nodes.', array('%label' => $bundle_info['label'])),
         '#type' => 'checkboxes',
         '#options' => $modes,
-        '#default_value' => $config->get($bundle . '_options_modes'),
+        '#default_value' => $config->get('sharethisnodes.'.$bundle),
       );
     }
     // Allow the user to choose which content types will have ShareThis added
@@ -372,22 +372,26 @@ class SharethisConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $entity_types = '';
     $values = $form_state->getValues();
+    $input_values = $form_state->getUserInput();
     $config = $this->config('sharethis.settings');
     // If the location is changing to/from 'content', clear the Field Info cache.
     $current_location = $config->get('location');
-    $new_location = $input_values['location'];
+    $new_location = $values['location'];
     if (($current_location == 'content' || $new_location == 'content') && $current_location != $new_location) {
       $this->entityManager->clearCachedFieldDefinitions();
     }
     $entity_info = \Drupal::entityManager()->getAllBundleInfo('node');
-    $entity_types = $entity_info['node'];
+    if (isset($entity_info['node'])) {
+      $entity_types = $entity_info['node'];
+    }
     $config->set('button_option', $values['button_option'])
       ->set('service_option', $values['service_option'])
       ->set('option_extras', $values['option_extras'])
       ->set('callesi', $values['callesi'])
       ->set('location', $values['location'])
-      ->set('node_types', $values['node_types'])
+      ->set('node_types', $input_values['node_types'])
       ->set('comments', $values['comments'])
       ->set('weight', $values['weight'])
       ->set('publisherID', $values['publisherID'])
@@ -401,10 +405,11 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ->set('cns.donotcopy', $values['cns']['donotcopy'])
       ->set('cns.hashaddress', $values['cns']['hashaddress'])
       ->save();
-    foreach ($entity_types as $key => $entity_type) {
-      $config->set($key . '_options_modes', $input_values[$key . '_options'])->save();
+    if (is_array($entity_types)) {
+      foreach ($entity_types as $key => $entity_type) {
+        $config->set('sharethisnodes.'.$key , $values[$key . '_options'])->save();
+      }
     }
     parent::submitForm($form, $form_state);
   }
-
 }
