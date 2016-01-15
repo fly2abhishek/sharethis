@@ -14,7 +14,7 @@ use Drupal\simpletest\WebTestBase;
  * @group sharethis
  */
 class SharethisBlockTest extends WebTestBase {
-  
+
   /**
    * Modules to enable.
    *
@@ -43,7 +43,7 @@ class SharethisBlockTest extends WebTestBase {
     foreach (['bartik', 'seven', 'stark'] as $theme) {
       $this->drupalGet('admin/structure/block/list/' . $theme);
       $this->assertTitle(t('Block layout') . ' | Drupal');
-      // Select the 'Powered by Drupal' block to be placed.
+      // Select the 'Sharethis' block to be placed.
       $block = array();
       $block['id'] = strtolower($this->randomMachineName());
       $block['theme'] = $theme;
