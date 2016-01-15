@@ -14,7 +14,7 @@ use Drupal\simpletest\WebTestBase;
  * @group sharethis
  */
 class SharethisBlockTest extends WebTestBase {
-
+  
   /**
    * Modules to enable.
    *
@@ -38,14 +38,25 @@ class SharethisBlockTest extends WebTestBase {
   public function testSharethisBlock() {
 
     // Test availability of the sharethis block in the admin "Place blocks" list.
-    $this->drupalGet('admin/structure/block');
-    $this->clickLinkPartialName('Place block');
-    $settings = [
-      'theme' => 'bartik',
-      'region' => 'header',
-    ];
-
-    $block = $this->drupalPlaceBlock('sharethis_block', $settings);
+    \Drupal::service('theme_handler')->install(['bartik', 'seven', 'stark']);
+    $theme_settings = $this->config('system.theme');
+    foreach (['bartik', 'seven', 'stark'] as $theme) {
+      $this->drupalGet('admin/structure/block/list/' . $theme);
+      $this->assertTitle(t('Block layout') . ' | Drupal');
+      // Select the 'Powered by Drupal' block to be placed.
+      $block = array();
+      $block['id'] = strtolower($this->randomMachineName());
+      $block['theme'] = $theme;
+      $block['region'] = 'content';
+      $this->drupalPostForm('admin/structure/block/add/sharethis_block', $block, t('Save block'));
+      $this->assertText(t('The block configuration has been saved.'));
+      // Set the default theme and ensure the block is placed.
+      $theme_settings->set('default', $theme)->save();
+      $this->drupalGet('node');
+      // $this->drupalGet('');.
+      $result = $this->xpath('//div[@class=:class]', array(':class' => 'sharethis-wrapper'));
+      $this->assertEqual(count($result), 1, 'Sharethis links found');
+    }
   }
 
 }
