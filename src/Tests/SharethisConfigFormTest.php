@@ -59,4 +59,30 @@ class SharethisConfigFormTest extends NodeTestBase {
     $this->assertEqual(count($result), 1, 'Sharethis links found');
   }
 
+  /**
+   * Tests the SharethisConfigForm.
+   */
+  function testSharethisConfigFormlinks() {
+
+    // Test that out of range values are picked up.
+    $edit['location'] = 'links';
+    $edit['callesi'] = 1;
+    $edit['article_options[full]'] = 'full';
+    $edit['page_options[full]'] = 'full';
+
+    $this->drupalPostForm('admin/config/services/sharethis', $edit, t('Save configuration'));
+    $this->assertText(t('The configuration options have been saved.'), t('Saved configuration'));
+    $settings = array(
+      'body' => array(array('value' => 'Lorem ipsum dolor sit amet, consectetur www.drupal.org')),
+      'promote' => 1,
+    );
+    $node = $this->drupalCreateNode($settings);
+    $this->assertTrue(Node::load($node->id()), 'Node created.');
+
+    // Render the node.
+    $this->drupalGet('node/' . $node->id());
+    $result = $this->xpath('//div[@class=:class]', array(':class' => 'sharethis-wrapper'));
+    $this->assertEqual(count($result), 1, 'Sharethis links found');
+  }
+
 }
