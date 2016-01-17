@@ -64,7 +64,7 @@ class SharethisConfigFormTest extends NodeTestBase {
    */
   function testSharethisConfigFormlinks() {
 
-    // Test that out of range values are picked up.
+    // Testing sharelinks on links present in a node.
     $edit['location'] = 'links';
     $edit['callesi'] = 1;
     $edit['article_options[full]'] = 'full';
