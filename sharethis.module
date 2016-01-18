@@ -130,7 +130,7 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
       break;
 
     case 'links':
-      $enabled_view_modes = $sharethisSettings->get($node->bundle() . '_options_modes');
+      $enabled_view_modes = $sharethisSettings->get('sharethisnodes.' . $node->bundle());
       if (isset($enabled_view_modes[$view_mode]) && $enabled_view_modes[$view_mode]) {
         $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
         $links['sharethis'] = array(

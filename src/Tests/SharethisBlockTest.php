@@ -52,8 +52,7 @@ class SharethisBlockTest extends WebTestBase {
       $this->assertText(t('The block configuration has been saved.'));
       // Set the default theme and ensure the block is placed.
       $theme_settings->set('default', $theme)->save();
-      $this->drupalGet('node');
-      // $this->drupalGet('');.
+      $this->drupalGet('');
       $result = $this->xpath('//div[@class=:class]', array(':class' => 'sharethis-wrapper'));
       $this->assertEqual(count($result), 1, 'Sharethis links found');
     }
