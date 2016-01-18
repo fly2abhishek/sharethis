@@ -108,6 +108,13 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
   // Get the full path to insert into the Share Buttons.
   $mPath = $node->urlInfo();
   $mPath = $mPath->getInternalPath();
+  global $base_url;
+  $path_obj = Url::fromUri($base_url . '/' . $mPath,
+    array(
+      'absolute' => TRUE,
+    )
+  );
+  $mPath = $path_obj->toString();
   $mTitle = $node->getTitle();
   // Check where we want to display the ShareThis widget.
   switch ($sharethisSettings->get('location')) {
