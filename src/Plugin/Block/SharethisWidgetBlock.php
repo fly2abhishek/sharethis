@@ -146,7 +146,7 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
         ->get('name');
       $markup = $this->sharethisManager->widgetContents(array(
         'm_path' => $mpath,
-        'm_title' => $mtitle
+        'm_title' => $mtitle,
       ));
       return [
         '#theme' => 'sharethis_block',
@@ -160,4 +160,5 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
       ];
     }
   }
+
 }

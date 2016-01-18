@@ -88,4 +88,5 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
       ];
     }
   }
+
 }
