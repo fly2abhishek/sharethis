@@ -129,29 +129,35 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function build() {
-    if ($this->configuration['sharethis_path'] == 'external') {
-      $mpath = $this->configuration['sharethis_path_external'];
-    }
-    else {
-      $current_path = \Drupal::url('<current>');
-      $mpath = ($this->configuration['sharethis_path'] == 'global') ? '<front>' : $current_path;
-    }
-    $request = \Drupal::request();
-    $route_match = \Drupal::routeMatch();
-    $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-    $title = is_object($title) ? $title->getUntranslatedString() : $title;
-    $mtitle = ($this->configuration['sharethis_path'] == 'current') ? $title : \Drupal::config('system.site')->get('name');
-    $markup = $this->sharethisManager->widgetContents(array('m_path' => $mpath, 'm_title' => $mtitle));
-    return [
-      '#theme' => 'sharethis_block',
-      '#content' => $markup,
-      '#attached' => array(
-        'library' => array(
-          'sharethis/sharethispickerexternalbuttonsws',
-          'sharethis/sharethispickerexternalbuttons',
+    if ($this->sharethisSettings->get('location') === 'block') {
+      if ($this->configuration['sharethis_path'] == 'external') {
+        $mpath = $this->configuration['sharethis_path_external'];
+      }
+      else {
+        $current_path = \Drupal::url('<current>');
+        $mpath = ($this->configuration['sharethis_path'] == 'global') ? '<front>' : $current_path;
+      }
+      $request = \Drupal::request();
+      $route_match = \Drupal::routeMatch();
+      $title = \Drupal::service('title_resolver')
+        ->getTitle($request, $route_match->getRouteObject());
+      $title = is_object($title) ? $title->getUntranslatedString() : $title;
+      $mtitle = ($this->configuration['sharethis_path'] == 'current') ? $title : \Drupal::config('system.site')
+        ->get('name');
+      $markup = $this->sharethisManager->widgetContents(array(
+        'm_path' => $mpath,
+        'm_title' => $mtitle
+      ));
+      return [
+        '#theme' => 'sharethis_block',
+        '#content' => $markup,
+        '#attached' => array(
+          'library' => array(
+            'sharethis/sharethispickerexternalbuttonsws',
+            'sharethis/sharethispickerexternalbuttons',
+          ),
         ),
-      ),
-    ];
+      ];
+    }
   }
-
 }

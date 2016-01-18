@@ -74,19 +74,18 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function build() {
-    $markup = $this->sharethisManager->blockContents();
-
-    return [
-      '#theme' => 'sharethis_block',
-      '#content' => $markup,
-      '#attached' => array(
-        'library' => array(
-          'sharethis/sharethispickerexternalbuttonsws',
-          'sharethis/sharethispickerexternalbuttons',
+    if ($this->sharethisSettings->get('location') === 'block') {
+      $markup = $this->sharethisManager->blockContents();
+      return [
+        '#theme' => 'sharethis_block',
+        '#content' => $markup,
+        '#attached' => array(
+          'library' => array(
+            'sharethis/sharethispickerexternalbuttonsws',
+            'sharethis/sharethispickerexternalbuttons',
+          ),
         ),
-      ),
-    ];
-
+      ];
+    }
   }
-
 }
