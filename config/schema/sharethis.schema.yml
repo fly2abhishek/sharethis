@@ -76,10 +76,10 @@ sharethis.settings:
       label: 'CNS'
       mapping:
         donotcopy:
-          type: string
+          type: integer
           label: 'Do not Copy'
         hashaddress:
-          type: string
+          type: integer
           label: 'Has Address'
     sharethisnodes:
       type: sequence
