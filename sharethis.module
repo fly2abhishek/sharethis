@@ -121,6 +121,7 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
     case 'content':
       $enabled_types = $data_options['node_types'];
       if (isset($enabled_types[$node->bundle()]) && $enabled_types[$node->bundle()] === $node->bundle()) {
+        $st_js = $sharethis_manager->sharethis_include_js();
         $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
         $build['sharethis_content'] = array(
           '#theme' => 'sharethis_block',
@@ -129,6 +130,10 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
             'library' => array(
               'sharethis/sharethispickerexternalbuttonsws',
               'sharethis/sharethispickerexternalbuttons',
+              'sharethis/sharethis'
+            ),
+            'drupalSettings' => array(
+              'sharethis' => $st_js,
             ),
           ),
           '#weight' => $sharethisSettings->get('location'),
@@ -139,6 +144,7 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
     case 'links':
       $enabled_view_modes = $sharethisSettings->get('sharethisnodes.' . $node->bundle());
       if (isset($enabled_view_modes[$view_mode]) && $enabled_view_modes[$view_mode]) {
+        $st_js = $sharethis_manager->sharethis_include_js();
         $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
         $links['sharethis'] = array(
           'html' => TRUE,
@@ -149,6 +155,10 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
               'library' => array(
                 'sharethis/sharethispickerexternalbuttonsws',
                 'sharethis/sharethispickerexternalbuttons',
+                'sharethis/sharethis',
+              ),
+              'drupalSettings' => array(
+                'sharethis' => $st_js,
               ),
             ),
           ),
@@ -178,6 +188,7 @@ function sharethis_comment_view(array &$build, EntityInterface $comment, EntityV
   $sharethis_manager = \Drupal::service('sharethis.manager');
   $sharethisSettings = \Drupal::config('sharethis.settings');
   if ($sharethisSettings->get('comments') == 1) {
+    $st_js = $sharethis_manager->sharethis_include_js();
     $data_options = $sharethis_manager->getOptions();
     $current_path = \Drupal::routeMatch()->getRouteName() ? Url::fromRouteMatch(\Drupal::routeMatch())->getInternalPath() : '';
     $path = isset($current_path) ? $current_path : '<front>';
@@ -200,6 +211,10 @@ function sharethis_comment_view(array &$build, EntityInterface $comment, EntityV
         'library' => array(
           'sharethis/sharethispickerexternalbuttonsws',
           'sharethis/sharethispickerexternalbuttons',
+          'sharethis/sharethis'
+        ),
+        'drupalSettings' => array(
+          'sharethis' => $st_js,
         ),
       ),
       '#attributes' => array('class' => 'sharethis-comment'),
