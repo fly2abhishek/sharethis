@@ -7,6 +7,7 @@
 
 namespace Drupal\sharethis\Plugin\Block;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -75,6 +76,26 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   public function build() {
     if ($this->sharethisSettings->get('location') === 'block') {
+      $has_run = &drupal_static(__FUNCTION__, FALSE);
+      if (!$has_run) {
+        // These are the ShareThis scripts:
+        $data_options = $this->sharethisManager->getOptions();
+        $st_js_options = array();
+        $st_js_options['switchTo5x'] = $data_options['widget'] == 'st_multi' ? TRUE : FALSE;
+        if ($data_options['late_load']) {
+          $st_js_options['__st_loadLate'] = TRUE;
+        }
+        $st_js = "";
+        foreach ($st_js_options as $name => $value) {
+          $st_js .= 'var ' . $name . ' = ' . Json::decode($value) . ';';
+        }
+        dsm($st_js);
+        $stlight = $this->sharethisManager->get_stLight_options($data_options);
+        $st_js = $stlight;
+        dsm($st_js);
+        $has_run = TRUE;
+      }
+
       $markup = $this->sharethisManager->blockContents();
       return [
         '#theme' => 'sharethis_block',
@@ -83,6 +104,10 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
           'library' => array(
             'sharethis/sharethispickerexternalbuttonsws',
             'sharethis/sharethispickerexternalbuttons',
+            'sharethis/sharethis'
+          ),
+          'drupalSettings' => array(
+            'sharethis' => $st_js,
           ),
         ),
       ];

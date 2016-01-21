@@ -170,8 +170,8 @@ class SharethisManager implements SharethisManagerInterface {
       $paramsStLight['shorten'] = 'false';
     }
     $stlight = Json::encode($paramsStLight);
-
-    return $stlight;
+    //  return $stlight;
+    return $paramsStLight;
   }
 
   /**
