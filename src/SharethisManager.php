@@ -135,10 +135,10 @@ class SharethisManager implements SharethisManagerInterface {
 
       }
       $stlight = $this->get_stLight_options($data_options);
-      $st_js = "if (stLight !== undefined) { stLight.options($stlight); }";
+      $st_js = $stlight;
+      return $st_js;
       $has_run = TRUE;
     }
-    return $has_run;
   }
 
   /**
@@ -249,7 +249,6 @@ class SharethisManager implements SharethisManagerInterface {
       // Render the span tag.
       $st_spans .= drupal_render($meta_generator);
     }
-    $this->sharethis_include_js();
     return ['data_options' => $data_options, 'm_path' => $mpath, 'm_title' => $mtitle , 'st_spans' => $st_spans];
   }
 
