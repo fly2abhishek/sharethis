@@ -165,7 +165,7 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
           'library' => array(
             'sharethis/sharethispickerexternalbuttonsws',
             'sharethis/sharethispickerexternalbuttons',
-            'sharethis/sharethis'
+            'sharethis/sharethis',
           ),
           'drupalSettings' => array(
             'sharethis' => $st_js,

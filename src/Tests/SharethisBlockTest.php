@@ -8,7 +8,6 @@
 namespace Drupal\sharethis\Tests;
 
 use Drupal\node\Tests\NodeTestBase;
-use Drupal\node\Entity\Node;
 
 /**
  * Tests if the sharethis block is available.
@@ -22,7 +21,7 @@ class SharethisBlockTest extends NodeTestBase {
    *
    * @var array
    */
-  public static $modules = array('node','system_test', 'block' , 'user', 'sharethis' , 'menu_ui');
+  public static $modules = array('node', 'system_test', 'block' , 'user', 'sharethis' , 'menu_ui');
   /**
    * {@inheritdoc}
    */

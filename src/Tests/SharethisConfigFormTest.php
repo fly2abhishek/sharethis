@@ -13,7 +13,7 @@ use Drupal\node\Entity\Node;
 /**
  * Tests the SystemConfigFormTestBase class.
  *
- * @group Sharethis
+ * @group sharethis
  */
 class SharethisConfigFormTest extends NodeTestBase {
 

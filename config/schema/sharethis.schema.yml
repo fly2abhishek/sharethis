@@ -18,7 +18,7 @@ sharethis.settings:
       label: 'Callesi'
     node_types:
       type: sequence
-      label: 'Node types'
+      label: 'Content types'
       sequence:
         type: string
         label: 'Bundles'
