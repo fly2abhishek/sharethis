@@ -7,28 +7,29 @@
 
 namespace Drupal\sharethis\Tests;
 
-use Drupal\simpletest\WebTestBase;
+use Drupal\node\Tests\NodeTestBase;
+use Drupal\node\Entity\Node;
+
 /**
  * Tests if the sharethis block is available.
  *
  * @group sharethis
  */
-class SharethisBlockTest extends WebTestBase {
+class SharethisBlockTest extends NodeTestBase {
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = array('system_test', 'node', 'block' , 'user', 'sharethis' , 'menu_ui');
+  public static $modules = array('node','system_test', 'block' , 'user', 'sharethis' , 'menu_ui');
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-
     // Create and login user.
-    $admin_user = $this->drupalCreateUser(array('administer blocks', 'administer site configuration', 'access administration pages'));
+    $admin_user = $this->drupalCreateUser(array('administer blocks', 'administer site configuration', 'access administration pages', 'administer sharethis', 'administer nodes'));
     $this->drupalLogin($admin_user);
   }
 
@@ -36,7 +37,9 @@ class SharethisBlockTest extends WebTestBase {
    * Test that the sharethis form block can be placed and works.
    */
   public function testSharethisBlock() {
-
+    $edit['location'] = 'block';
+    $this->drupalPostForm('admin/config/services/sharethis', $edit, t('Save configuration'));
+    $this->assertText(t('The configuration options have been saved.'), t('Saved configuration'));
     // Test availability of the sharethis block in the admin "Place blocks" list.
     \Drupal::service('theme_handler')->install(['bartik', 'seven', 'stark']);
     $theme_settings = $this->config('system.theme');

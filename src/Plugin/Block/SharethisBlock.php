@@ -75,6 +75,7 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   public function build() {
     if ($this->sharethisSettings->get('location') === 'block') {
+      $st_js = $this->sharethisManager->sharethis_include_js();
       $markup = $this->sharethisManager->blockContents();
       return [
         '#theme' => 'sharethis_block',
@@ -83,10 +84,13 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
           'library' => array(
             'sharethis/sharethispickerexternalbuttonsws',
             'sharethis/sharethispickerexternalbuttons',
+            'sharethis/sharethis'
+          ),
+          'drupalSettings' => array(
+            'sharethis' => $st_js,
           ),
         ),
       ];
     }
   }
-
 }
