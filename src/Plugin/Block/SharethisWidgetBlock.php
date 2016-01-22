@@ -11,6 +11,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\sharethis\SharethisManagerInterface;
 
@@ -130,12 +131,21 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   public function build() {
     if ($this->sharethisSettings->get('location') === 'block') {
+      $st_js = $this->sharethisManager->sharethis_include_js();
       if ($this->configuration['sharethis_path'] == 'external') {
         $mpath = $this->configuration['sharethis_path_external'];
       }
       else {
         $current_path = \Drupal::url('<current>');
-        $mpath = ($this->configuration['sharethis_path'] == 'global') ? '<front>' : $current_path;
+        $path = ($this->configuration['sharethis_path'] == 'global') ? '<front>' : $current_path;
+
+        global $base_url;
+        $path_obj = Url::fromUri($base_url . '/' . $path,
+          array(
+            'absolute' => TRUE,
+          )
+        );
+        $mpath = $path_obj->toString();
       }
       $request = \Drupal::request();
       $route_match = \Drupal::routeMatch();
@@ -155,6 +165,10 @@ class SharethisWidgetBlock extends BlockBase implements ContainerFactoryPluginIn
           'library' => array(
             'sharethis/sharethispickerexternalbuttonsws',
             'sharethis/sharethispickerexternalbuttons',
+            'sharethis/sharethis'
+          ),
+          'drupalSettings' => array(
+            'sharethis' => $st_js,
           ),
         ),
       ];

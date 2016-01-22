@@ -44,6 +44,7 @@ class SharethisNode extends FieldPluginBase {
     );
     $mPath = $path_obj->toString();
     $data_options = $sharethis_manager->getOptions();
+    $st_js = $sharethis_manager->sharethis_include_js();
     $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
     return [
       '#theme' => 'sharethis_block',
@@ -52,6 +53,10 @@ class SharethisNode extends FieldPluginBase {
         'library' => array(
           'sharethis/sharethispickerexternalbuttonsws',
           'sharethis/sharethispickerexternalbuttons',
+          'sharethis/sharethis',
+        ),
+        'drupalSettings' => array(
+          'sharethis' => $st_js,
         ),
       ),
     ];

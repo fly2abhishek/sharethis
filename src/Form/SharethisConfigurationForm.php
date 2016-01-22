@@ -402,8 +402,8 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ->set('option_onhover', $values['option_onhover'])
       ->set('option_neworzero', $values['option_neworzero'])
       ->set('option_shorten', $values['option_shorten'])
-      ->set('cns.donotcopy', $values['cns']['donotcopy'])
-      ->set('cns.hashaddress', $values['cns']['hashaddress'])
+      ->set('cns.donotcopy', $input_values['cns']['donotcopy'])
+      ->set('cns.hashaddress', $input_values['cns']['hashaddress'])
       ->save();
     if (is_array($entity_types)) {
       foreach ($entity_types as $key => $entity_type) {
