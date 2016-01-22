@@ -38,7 +38,6 @@ sharethispickerexternalbuttons:
       - core/jquery
 
 sharethis:
-  version: VERSION
   js:
     js/sharethis.js: { weight: -3 }
   dependencies:
