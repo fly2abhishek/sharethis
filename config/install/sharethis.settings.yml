@@ -21,3 +21,8 @@ widget_option: 'st_multi'
 cns:
   donotcopy:
   hashaddress:
+sharethisnodes:
+  article:
+    full: 'full'
+  page:
+    full: 'full'
