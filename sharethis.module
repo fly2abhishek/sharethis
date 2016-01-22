@@ -147,7 +147,6 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
         $st_js = $sharethis_manager->sharethis_include_js();
         $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
         $links['sharethis'] = array(
-          'html' => TRUE,
           'title' => array(
             '#theme' => 'sharethis_block',
             '#content' => $content,
@@ -165,7 +164,6 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
           'attributes' => array('class' => 'sharethis-buttons'),
         );
         $build['links'] = array(
-          'html' => TRUE,
           '#theme' => 'links',
           '#links' => $links,
           '#attributes' => array(
