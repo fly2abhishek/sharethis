@@ -7,9 +7,9 @@
     'use strict';
     $(document).ready(function(){
         var switchTo5x = true;var __st_loadLate = true;
-        if (stLight !== undefined) {
-            stLight.options(drupalSettings.sharethis);
-        }
+      if (stLight !== undefined) {
+          stLight.options(drupalSettings.sharethis);
+      }
 
     });
 })(jQuery, drupalSettings);
