@@ -58,10 +58,10 @@ function theme_sharethis_block($variables) {
  * Implements hook_entity_extra_field_info().
  */
 function sharethis_entity_extra_field_info() {
-  $sharethisSettings = \Drupal::config('sharethis.settings');
+  $sharethis_settings = \Drupal::config('sharethis.settings');
   $extra = array();
   // Only add extra fields if the location is the node content.
-  if ($sharethisSettings->get('location') == 'content') {
+  if ($sharethis_settings->get('location') == 'content') {
     $entity_info = \Drupal::entityManager()->getAllBundleInfo('node');
     if (isset($entity_info['node'])) {
       foreach ($entity_info['node'] as $bundle => $bundle_info) {
@@ -69,7 +69,7 @@ function sharethis_entity_extra_field_info() {
           'sharethis' => array(
             'label' => t('ShareThis'),
             'description' => t('ShareThis links'),
-            'weight' => $sharethisSettings->get('weight'),
+            'weight' => $sharethis_settings->get('weight'),
           ),
         );
       }
@@ -94,7 +94,7 @@ function sharethis_entity_extra_field_info() {
  */
 function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   $sharethis_manager = \Drupal::service('sharethis.manager');
-  $sharethisSettings = \Drupal::config('sharethis.settings');
+  $sharethis_settings = \Drupal::config('sharethis.settings');
   // Don't display if the user is currently searching, or in the RSS feed.
   switch ($view_mode) {
     case 'search_result':
@@ -117,7 +117,7 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
   $mPath = $path_obj->toString();
   $mTitle = $node->getTitle();
   // Check where we want to display the ShareThis widget.
-  switch ($sharethisSettings->get('location')) {
+  switch ($sharethis_settings->get('location')) {
     case 'content':
       $enabled_types = $data_options['node_types'];
       if (isset($enabled_types[$node->bundle()]) && $enabled_types[$node->bundle()] === $node->bundle()) {
@@ -136,13 +136,13 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
               'sharethis' => $st_js,
             ),
           ),
-          '#weight' => $sharethisSettings->get('location'),
+          '#weight' => $sharethis_settings->get('location'),
         );
       }
       break;
 
     case 'links':
-      $enabled_view_modes = $sharethisSettings->get('sharethisnodes.' . $node->bundle());
+      $enabled_view_modes = $sharethis_settings->get('sharethisnodes.' . $node->bundle());
       if (isset($enabled_view_modes[$view_mode]) && $enabled_view_modes[$view_mode]) {
         $st_js = $sharethis_manager->sharethis_include_js();
         $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
@@ -184,8 +184,8 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
  */
 function sharethis_comment_view(array &$build, EntityInterface $comment, EntityViewDisplayInterface $display, $view_mode) {
   $sharethis_manager = \Drupal::service('sharethis.manager');
-  $sharethisSettings = \Drupal::config('sharethis.settings');
-  if ($sharethisSettings->get('comments') == 1) {
+  $sharethis_settings = \Drupal::config('sharethis.settings');
+  if ($sharethis_settings->get('comments') == 1) {
     $st_js = $sharethis_manager->sharethis_include_js();
     $data_options = $sharethis_manager->getOptions();
     $current_path = \Drupal::routeMatch()->getRouteName() ? Url::fromRouteMatch(\Drupal::routeMatch())->getInternalPath() : '';
@@ -216,7 +216,7 @@ function sharethis_comment_view(array &$build, EntityInterface $comment, EntityV
         ),
       ),
       '#attributes' => array('class' => 'sharethis-comment'),
-      '#weight' => $sharethisSettings->get('location'),
+      '#weight' => $sharethis_settings->get('location'),
     );
   }
 }
