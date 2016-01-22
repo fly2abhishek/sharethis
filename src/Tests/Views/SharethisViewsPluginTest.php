@@ -14,7 +14,7 @@ use Drupal\views\Tests\ViewTestBase;
 /**
  * Tests the sharethis links appearing on node.
  *
- * @group history
+ * @group sharethis
  *
  * @see \Drupal\sharethis\Plugin\views\field\SharethisNode.
  */

@@ -84,7 +84,7 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
           'library' => array(
             'sharethis/sharethispickerexternalbuttonsws',
             'sharethis/sharethispickerexternalbuttons',
-            'sharethis/sharethis'
+            'sharethis/sharethis',
           ),
           'drupalSettings' => array(
             'sharethis' => $st_js,
@@ -93,4 +93,5 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
       ];
     }
   }
+
 }

@@ -130,7 +130,7 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
             'library' => array(
               'sharethis/sharethispickerexternalbuttonsws',
               'sharethis/sharethispickerexternalbuttons',
-              'sharethis/sharethis'
+              'sharethis/sharethis',
             ),
             'drupalSettings' => array(
               'sharethis' => $st_js,
@@ -209,7 +209,7 @@ function sharethis_comment_view(array &$build, EntityInterface $comment, EntityV
         'library' => array(
           'sharethis/sharethispickerexternalbuttonsws',
           'sharethis/sharethispickerexternalbuttons',
-          'sharethis/sharethis'
+          'sharethis/sharethis',
         ),
         'drupalSettings' => array(
           'sharethis' => $st_js,
