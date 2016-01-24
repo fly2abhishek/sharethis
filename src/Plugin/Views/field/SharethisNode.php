@@ -33,7 +33,7 @@ class SharethisNode extends FieldPluginBase {
   public function render(ResultRow $values) {
     $sharethis_manager = \Drupal::service('sharethis.manager');
     $node = $values->_entity;
-    $mTitle = $node->getTitle();
+    $m_title = $node->getTitle();
     $path = $node->urlInfo();
     $path = $path->getInternalPath();
     global $base_url;
@@ -42,10 +42,10 @@ class SharethisNode extends FieldPluginBase {
         'absolute' => TRUE,
       )
     );
-    $mPath = $path_obj->toString();
+    $m_path = $path_obj->toString();
     $data_options = $sharethis_manager->getOptions();
-    $st_js = $sharethis_manager->sharethis_include_js();
-    $content = $sharethis_manager->renderSpans($data_options, $mTitle, $mPath);
+    $st_js = $sharethis_manager->sharethisIncludeJs();
+    $content = $sharethis_manager->renderSpans($data_options, $m_title, $m_path);
     return [
       '#theme' => 'sharethis_block',
       '#content' => $content,

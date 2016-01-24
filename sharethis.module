@@ -3,12 +3,11 @@
  * @file
  * A module that adds one of the ShareThis widget to your website.
  */
+
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-
-
 
 /**
  * Implements hook_help().
@@ -44,7 +43,6 @@ function sharethis_theme($existing, $type, $theme, $path) {
       'function' => 'theme_sharethis_block',
     ),
   );
-  return $theme;
 }
 
 /**
@@ -80,17 +78,10 @@ function sharethis_entity_extra_field_info() {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_view() for node entities.
+ * Implements hook_ENTITY_TYPE_view().
  *
  * Inserts ShareThis widget code onto each node view.
  * TODO: Want to add the option somewhere to select nodes.
- *
- * @param node
- *   The node that is being acted upon
- * @param view_mode
- *   The type of view (teaser, full, etc)
- * @param langcode
- *   Information about the language
  */
 function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   $sharethis_manager = \Drupal::service('sharethis.manager');
@@ -121,7 +112,7 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
     case 'content':
       $enabled_types = $data_options['node_types'];
       if (isset($enabled_types[$node->bundle()]) && $enabled_types[$node->bundle()] === $node->bundle()) {
-        $st_js = $sharethis_manager->sharethis_include_js();
+        $st_js = $sharethis_manager->sharethisIncludeJs();
         $content = $sharethis_manager->renderSpans($data_options, $title, $path);
         $build['sharethis_content'] = array(
           '#theme' => 'sharethis_block',
@@ -144,7 +135,7 @@ function sharethis_node_view(array &$build, EntityInterface $node, EntityViewDis
     case 'links':
       $enabled_view_modes = $sharethis_settings->get('sharethisnodes.' . $node->bundle());
       if (isset($enabled_view_modes[$view_mode]) && $enabled_view_modes[$view_mode]) {
-        $st_js = $sharethis_manager->sharethis_include_js();
+        $st_js = $sharethis_manager->sharethisIncludeJs();
         $content = $sharethis_manager->renderSpans($data_options, $title, $path);
         $links['sharethis'] = array(
           'title' => array(
@@ -186,7 +177,7 @@ function sharethis_comment_view(array &$build, EntityInterface $comment, EntityV
   $sharethis_manager = \Drupal::service('sharethis.manager');
   $sharethis_settings = \Drupal::config('sharethis.settings');
   if ($sharethis_settings->get('comments') == 1) {
-    $st_js = $sharethis_manager->sharethis_include_js();
+    $st_js = $sharethis_manager->sharethisIncludeJs();
     $data_options = $sharethis_manager->getOptions();
     $current_path = \Drupal::routeMatch()->getRouteName() ? Url::fromRouteMatch(\Drupal::routeMatch())->getInternalPath() : '';
     $path = isset($current_path) ? $current_path : '<front>';

@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Definition of \Drupal\sharethis\Tests\SharethisConfigFormTest.
  */
 
 namespace Drupal\sharethis\Tests;
@@ -40,7 +41,7 @@ class SharethisConfigFormTest extends NodeTestBase {
   /**
    * Tests the SharethisConfigForm.
    */
-  function testSharethisConfigForm() {
+  public function testSharethisConfigForm() {
     // Test that out of range values are picked up.
     $edit['location'] = 'content';
     $edit['callesi'] = 1;
@@ -62,7 +63,7 @@ class SharethisConfigFormTest extends NodeTestBase {
   /**
    * Tests the SharethisConfigForm.
    */
-  function testSharethisConfigFormlinks() {
+  public function testSharethisConfigFormlinks() {
 
     // Testing sharelinks on links present in a node.
     $edit['location'] = 'links';

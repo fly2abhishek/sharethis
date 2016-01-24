@@ -46,15 +46,15 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
-   *   The module manager service.
    * @param \Drupal\Core\Config\Config $sharethis_settings
    *   The config object for 'sharethis.settings'.
+   * @param \Drupal\sharethis\SharethisManagerInterface $sharethis_manager
+   *   The module manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Config $sharethis_settings, SharethisManagerInterface $sharethisManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Config $sharethis_settings, SharethisManagerInterface $sharethis_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->sharethisSettings = $sharethis_settings;
-    $this->sharethisManager = $sharethisManager;
+    $this->sharethisManager = $sharethis_manager;
   }
 
   /**
@@ -75,7 +75,7 @@ class SharethisBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   public function build() {
     if ($this->sharethisSettings->get('location') === 'block') {
-      $st_js = $this->sharethisManager->sharethis_include_js();
+      $st_js = $this->sharethisManager->sharethisIncludeJs();
       $markup = $this->sharethisManager->blockContents();
       return [
         '#theme' => 'sharethis_block',

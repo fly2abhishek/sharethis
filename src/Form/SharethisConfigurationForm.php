@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 
 /**
- * Provides a settings for sharethis modle.
+ * Provides a settings for sharethis module.
  */
 class SharethisConfigurationForm extends ConfigFormBase {
 
@@ -50,15 +50,15 @@ class SharethisConfigurationForm extends ConfigFormBase {
    *   The factory for configuration objects.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
-   * @param \Drupal\sharethis\SharethisManagerInterface $sharethisManager
+   * @param \Drupal\sharethis\SharethisManagerInterface $sharethis_manager
    *   The sharethis Manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, EntityManagerInterface $entity_manager, SharethisManagerInterface $sharethisManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, EntityManagerInterface $entity_manager, SharethisManagerInterface $sharethis_manager) {
     parent::__construct($config_factory);
 
     $this->moduleHandler = $module_handler;
     $this->entityManager = $entity_manager;
-    $this->sharethisManager = $sharethisManager;
+    $this->sharethisManager = $sharethis_manager;
   }
 
   /**
@@ -101,12 +101,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
     $config = $this->config('sharethis.settings');
 
     $current_options_array = $this->sharethisManager->getOptions();
-    // Create the variables related to widget choice.
-    $widget_type = $current_options_array['widget'];
-    $widget_markup = "";
-    if ($widget_type == "st_multi") {
-      $widget_markup = "st_multi";
-    }
+
     // Create the variables related to button choice.
     $button_choice = $current_options_array['buttons'];
     // Create the variables related to services chosen.
@@ -139,7 +134,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
       ),
       '#default_value' => $button_choice,
       '#title' => t("Choose a button style:"),
-      '#prefix' => '<div class="st_widgetContain"><div class="st_spriteCover"><img id="stb_sprite" class="st_buttonSelectSprite ' . $button_choice . '" src="' . $base_url . '/' . $my_path . '/img/preview_sprite.png"></img></div><div class="st_widgetPic"><img class="st_buttonSelectImage" src="' . $base_url . '/' . $my_path . '/img/preview_bg.png" /></div>',
+      '#prefix' => '<div class="st_widgetContain"><div class="st_spriteCover"><img id="stb_sprite" class="st_buttonSelectSprite ' . $button_choice . '" src="' . $base_url . '/' . $my_path . '/img/preview_sprite.png" /></div><div class="st_widgetPic"><img class="st_buttonSelectImage" src="' . $base_url . '/' . $my_path . '/img/preview_bg.png" /></div>',
       '#suffix' => '</div>',
     );
     $form['options']['service_option'] = array(
@@ -215,7 +210,6 @@ class SharethisConfigurationForm extends ConfigFormBase {
       $modes[$mode] = $mode_info['label'];
     }
     // Get a list of content types and view modes.
-    $view_modes_selected = $current_options_array['view_modes'];
     foreach ($entity_bundles as $bundle => $bundle_info) {
       $form['context']['links'][$bundle . '_options'] = array(
         '#title' => t('%label View Modes', array('%label' => $bundle_info['label'])),
@@ -347,7 +341,8 @@ class SharethisConfigurationForm extends ConfigFormBase {
     // Additional filters for the option extras input.
     $input_values['option_extras'] = (isset($input_values['option_extras'])) ? $input_values['option_extras'] : array();
 
-    // Sanitize the publisher ID option.  Since it's a text field, remove anything that resembles code.
+    // Sanitize the publisher ID option. Since it's a text field,
+    // remove anything that resembles code.
     $input_values['publisherID'] = Xss::filter($input_values['publisherID']);
 
     if ($input_values['callesi'] == 1) {
@@ -376,7 +371,7 @@ class SharethisConfigurationForm extends ConfigFormBase {
     $values = $form_state->getValues();
     $input_values = $form_state->getUserInput();
     $config = $this->config('sharethis.settings');
-    // If the location is changing to/from 'content', clear the Field Info cache.
+    // If the location change to/from 'content', clear the Field Info cache.
     $current_location = $config->get('location');
     $new_location = $values['location'];
     if (($current_location == 'content' || $new_location == 'content') && $current_location != $new_location) {

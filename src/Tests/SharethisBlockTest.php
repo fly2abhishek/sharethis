@@ -21,14 +21,20 @@ class SharethisBlockTest extends NodeTestBase {
    *
    * @var array
    */
-  public static $modules = array('node', 'system_test', 'block' , 'user', 'sharethis' , 'menu_ui');
+  public static $modules = array(
+    'node', 'system_test', 'block', 'user', 'sharethis', 'menu_ui',
+  );
+
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
     // Create and login user.
-    $admin_user = $this->drupalCreateUser(array('administer blocks', 'administer site configuration', 'access administration pages', 'administer sharethis', 'administer nodes'));
+    $admin_user = $this->drupalCreateUser(array(
+      'administer blocks', 'administer site configuration',
+      'access administration pages', 'administer sharethis', 'administer nodes',
+    ));
     $this->drupalLogin($admin_user);
   }
 

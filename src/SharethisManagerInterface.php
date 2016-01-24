@@ -39,35 +39,40 @@ interface SharethisManagerInterface {
   /**
    * Include st js scripts.
    */
-  public function sharethis_include_js();
+  public function sharethisIncludeJs();
 
 
   /**
-   * Get_stLight_options() function is creating options to be passed to stLight.options
-   * $data_options array is the settings selected by publisher in admin panel.
+   * function is creating options to be passed to stLight.
+   *
+   * @param array $data_options
+   *   The settings selected by publisher in admin panel.
+   *
    */
-  public function get_stLight_options($data_options);
+  public function getShareThisLightOptions($data_options);
 
 
   /**
    * Converts given value to boolean.
    *
-   * @param val
+   * @param $val
    *   Which value to convert to boolean
    *
    * @return bool
    *
    * @todo To be replaced with bool
    */
-  function to_boolean($val);
+  public function toBoolean($val);
 
   /**
    * Custom html block.
    *
-   * @param array, string, string
+   * @param array $array
+   * @param string $title
+   * @param string $string
    *
    * @return array
    */
-  public function renderSpans($array, $string, $string);
+  public function renderSpans($array, $title, $string);
 
 }

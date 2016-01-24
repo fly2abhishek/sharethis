@@ -50,31 +50,30 @@ class SharethisManager implements SharethisManagerInterface {
    * {@inheritdoc}
    */
   public function getOptions() {
-    $sharethisConfig = $this->configFactory->get('sharethis.settings');
+    $sharethis_config = $this->configFactory->get('sharethis.settings');
 
-    $default_sharethis_nodetypes = array('article' => 'article', 'page' => 'page');
     $view_modes = array();
     foreach (array_keys(NodeType::loadMultiple()) as $type) {
       $view_modes[$type] = array('article' => 'article', 'page' => 'page');
     }
 
     return [
-      'buttons' => $sharethisConfig->get('button_option', 'stbc_button'),
-      'publisherID' => $sharethisConfig->get('publisherID'),
-      'services' => $sharethisConfig->get('service_option'),
-      'option_extras' => $sharethisConfig->get('option_extras'),
-      'widget' => $sharethisConfig->get('widget_option'),
-      'onhover' => $sharethisConfig->get('option_onhover'),
-      'neworzero' => $sharethisConfig->get('option_neworzero'),
-      'twitter_suffix' => $sharethisConfig->get('twitter_suffix'),
-      'twitter_handle' => $sharethisConfig->get('twitter_handle'),
-      'twitter_recommends' => $sharethisConfig->get('twitter_recommends'),
-      'late_load' => $sharethisConfig->get('late_load'),
+      'buttons' => $sharethis_config->get('button_option', 'stbc_button'),
+      'publisherID' => $sharethis_config->get('publisherID'),
+      'services' => $sharethis_config->get('service_option'),
+      'option_extras' => $sharethis_config->get('option_extras'),
+      'widget' => $sharethis_config->get('widget_option'),
+      'onhover' => $sharethis_config->get('option_onhover'),
+      'neworzero' => $sharethis_config->get('option_neworzero'),
+      'twitter_suffix' => $sharethis_config->get('twitter_suffix'),
+      'twitter_handle' => $sharethis_config->get('twitter_handle'),
+      'twitter_recommends' => $sharethis_config->get('twitter_recommends'),
+      'late_load' => $sharethis_config->get('late_load'),
       'view_modes' => $view_modes,
-      'cns' => $sharethisConfig->get('cns'),
-      'callesi' => (NULL == $sharethisConfig->get('cns')) ? 1 : 0,
-      'node_types' => $sharethisConfig->get('node_types'),
-      'shorten' => $sharethisConfig->get('option_shorten'),
+      'cns' => $sharethis_config->get('cns'),
+      'callesi' => (NULL == $sharethis_config->get('cns')) ? 1 : 0,
+      'node_types' => $sharethis_config->get('node_types'),
+      'shorten' => $sharethis_config->get('option_shorten'),
     ];
   }
 
@@ -82,12 +81,12 @@ class SharethisManager implements SharethisManagerInterface {
   /**
    * {@inheritdoc}
    */
-  function blockContents() {
+  public function blockContents() {
 
-    $sharethisConfig = $this->configFactory->get('sharethis.settings');
+    $sharethis_config = $this->configFactory->get('sharethis.settings');
     $config = $this->configFactory->get('system.site');
-    if ($sharethisConfig->get('location') == 'block') {
-      // First get all of the options for the sharethis widget from the database:
+    if ($sharethis_config->get('location') == 'block') {
+      // First Get all of the options for sharethis widget from database.
       $data_options = $this->getOptions();
       $current_path = \Drupal::routeMatch()->getRouteName() ? Url::fromRouteMatch(\Drupal::routeMatch())->getInternalPath() : '';
       $path = isset($current_path) ? $current_path : '<front>';
@@ -97,19 +96,19 @@ class SharethisManager implements SharethisManagerInterface {
           'absolute' => TRUE,
         )
       );
-      $mPath = $path_obj->toString();
+      $m_path = $path_obj->toString();
       $request = \Drupal::request();
       $route_match = \Drupal::routeMatch();
-      $mTitle = $this->titleResolver->getTitle($request, $route_match->getRouteObject());
-      $mtitle = is_object($mTitle) ? $mTitle->getUntranslatedString() : $config->get('name');
-      return $this->renderSpans($data_options, $mtitle, $mPath);
+      $mtitle = $this->titleResolver->getTitle($request, $route_match->getRouteObject());
+      $m_title = is_object($mtitle) ? $mtitle->getUntranslatedString() : $config->get('name');
+      return $this->renderSpans($data_options, $m_title, $m_path);
 
     }
   }
   /**
    * {@inheritdoc}
    */
-  function widgetContents($settings) {
+  public function widgetContents($settings) {
     $mpath = $settings['m_path'];
     $mtitle = $settings['m_title'];
     $data_options = $this->getOptions();
@@ -119,7 +118,7 @@ class SharethisManager implements SharethisManagerInterface {
   /**
    * {@inheritdoc}
    */
-  function sharethis_include_js() {
+  public function sharethisIncludeJs() {
     $has_run = &drupal_static(__FUNCTION__, FALSE);
     if (!$has_run) {
       // These are the ShareThis scripts:
@@ -134,49 +133,48 @@ class SharethisManager implements SharethisManagerInterface {
         $st_js .= 'var ' . $name . ' = ' . Json::decode($value) . ';';
 
       }
-      $stlight = $this->get_stLight_options($data_options);
-      $st_js = $stlight;
-      return $st_js;
+      $st_js = $this->getShareThisLightOptions($data_options);
       $has_run = TRUE;
+      return $st_js;
     }
   }
 
   /**
    * {@inheritdoc}
    */
-  function get_stLight_options($data_options) {
+  public function getShareThisLightOptions($data_options) {
     // Provide the publisher ID.
-    $paramsStLight = array(
+    $params_stlight = array(
       'publisher' => $data_options['publisherID'],
     );
-    $paramsStLight['version'] = ($data_options['widget'] == 'st_multi') ? "5x" : "4x";
+    $params_stlight['version'] = ($data_options['widget'] == 'st_multi') ? "5x" : "4x";
     if ($data_options['callesi'] == 0) {
-      $paramsStLight["doNotCopy"] = !$this->to_boolean($data_options['cns']['donotcopy']);
-      $paramsStLight["hashAddressBar"] = $this->to_boolean($data_options['cns']['hashaddress']);
-      if (!($paramsStLight["hashAddressBar"]) && $paramsStLight["doNotCopy"]) {
-        $paramsStLight["doNotHash"] = TRUE;
+      $params_stlight["doNotCopy"] = !$this->toBoolean($data_options['cns']['donotcopy']);
+      $params_stlight["hashAddressBar"] = $this->toBoolean($data_options['cns']['hashaddress']);
+      if (!($params_stlight["hashAddressBar"]) && $params_stlight["doNotCopy"]) {
+        $params_stlight["doNotHash"] = TRUE;
       }
       else {
-        $paramsStLight["doNotHash"] = FALSE;
+        $params_stlight["doNotHash"] = FALSE;
       }
     }
     if (isset($data_options['onhover']) && $data_options['onhover'] == FALSE) {
-      $paramsStLight['onhover'] = FALSE;
+      $params_stlight['onhover'] = FALSE;
     }
     if ($data_options['neworzero']) {
-      $paramsStLight['newOrZero'] = "zero";
+      $params_stlight['newOrZero'] = "zero";
     }
     if (!$data_options['shorten']) {
-      $paramsStLight['shorten'] = 'false';
+      $params_stlight['shorten'] = 'false';
     }
-    $stlight = Json::encode($paramsStLight);
-    return $paramsStLight;
+
+    return $params_stlight;
   }
 
   /**
    * {@inheritdoc}
    */
-  function to_boolean($val) {
+  public function toBoolean($val) {
     if (strtolower(trim($val)) === 'false') {
       return FALSE;
     }
@@ -186,9 +184,9 @@ class SharethisManager implements SharethisManagerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function renderSpans($data_options, $mtitle, $mpath) {
+  public function renderSpans($data_options, $mtitle, $mpath) {
     foreach ($data_options['option_extras'] as $service) {
       $data_options['services'] .= ',"' . $service . '"';
     }
@@ -209,18 +207,18 @@ class SharethisManager implements SharethisManagerInterface {
       }
 
       // Find the service code name.
-      $serviceCodeName = Unicode::substr($service[1], 0, -1);
+      $service_code_name = Unicode::substr($service[1], 0, -1);
 
       // Switch the title on a per-service basis if required.
       // $mtitle = $mtitle;.
-      switch ($serviceCodeName) {
+      switch ($service_code_name) {
         case 'twitter':
           $mtitle = empty($data_options['twitter_suffix']) ? $mtitle : Html::escape($mtitle) . ' ' . Html::escape($data_options['twitter_suffix']);
           break;
       }
 
       // Sanitize the service code for display.
-      $display = Html::escape($serviceCodeName);
+      $display = Html::escape($service_code_name);
 
       // Put together the span attributes.
       $attributes = array(
@@ -228,7 +226,7 @@ class SharethisManager implements SharethisManagerInterface {
         'st_title' => $mtitle,
         'class' => 'st_' . $display . $type,
       );
-      if ($serviceCodeName == 'twitter') {
+      if ($service_code_name == 'twitter') {
         if (!empty($data_options['twitter_handle'])) {
           $attributes['st_via'] = $data_options['twitter_handle'];
           $attributes['st_username'] = $data_options['twitter_recommends'];
@@ -248,7 +246,13 @@ class SharethisManager implements SharethisManagerInterface {
       // Render the span tag.
       $st_spans .= drupal_render($meta_generator);
     }
-    return ['data_options' => $data_options, 'm_path' => $mpath, 'm_title' => $mtitle , 'st_spans' => $st_spans];
+
+    return [
+      'data_options' => $data_options,
+      'm_path' => $mpath,
+      'm_title' => $mtitle ,
+      'st_spans' => $st_spans,
+    ];
   }
 
 }

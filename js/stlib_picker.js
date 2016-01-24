@@ -2,11 +2,12 @@
  * @file
  * This library requires JQuery.
  */
+
 // It also requires stcommon.js in your header for an official list of services
 // stlib_picker.defaultServices defines the services from stcommon that get loaded as the default services in the picker
 // Styling can be found in stlib_picker.css and should be linked in the page.
 // To get selected services as an array of strings:  (ie ["twitter", "sharethis", "facebook"] )
-//   Call: var answer = stlib_picker.pickerList[uniqueID]["getServices"]();.
+// Call: var answer = stlib_picker.pickerList[uniqueID]["getServices"]();.
 var stlib_picker = {}, isSecure = ("https:" == document.location.protocol) ? true : false;
 stlib_picker.pickerList = [];
 stlib_picker.defaultServices = ["sharethis", "tumblr", "bebo"];

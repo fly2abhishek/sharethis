@@ -32,7 +32,9 @@ class SharethisViewsPluginTest extends ViewTestBase {
    *
    * @var array
    */
-  public static $modules = array('node', 'system_test', 'views', 'user', 'sharethis', 'sharethis_test_views');
+  public static $modules = array(
+    'node', 'system_test', 'views', 'user', 'sharethis', 'sharethis_test_views',
+  );
   public static $testViews = array('test_sharethis');
   /**
    * {@inheritdoc}
